@@ -1,0 +1,387 @@
+{
+    "arjun" : {
+        "steps" : [
+            {
+                "type" : "pip",
+                "packages" : ["arjun"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "assetfinder" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "tomnomnom/assetfinder",
+                "artifact" : "assetfinder-linux-amd64-{{latest}}.tgz",
+                "outfile" : "assetfinder.tgz"
+            },
+            {
+                "type" : "extract",
+                "compression" : "tgz",
+                "archive" : "assetfinder.tgz",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "assetfinder",
+                "name" : "assetfinder"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "cupp" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/Mebus/cupp.git",
+                "clean" : ["Screenshots"]
+            },
+            {
+                "type" : "link",
+                "target" : "cupp.py",
+                "name" : "cupp"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "dirsearch" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/maurosoria/dirsearch.git",
+                "clean" : [".??*"]
+            },
+            {
+                "type" : "link",
+                "target" : "dirsearch.py",
+                "name" : "dirsearch"
+            },
+            {
+                "type" : "pip",
+                "file" : "requirements.txt"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "dog" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "ogham/dog",
+                "artifact" : "dog-v{{latest}}-x86_64-unknown-linux-gnu.zip",
+                "outfile" : "dog-linux-gnu.zip"
+            },
+            {
+                "type" : "extract",
+                "compression" : "zip",
+                "archive" : "dog-linux-gnu.zip",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "bin/dog",
+                "name" : "dog"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "exiftool" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["exiftool"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "fcrackzip" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["fcrackzip"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "ffuf" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "ffuf/ffuf",
+                "artifact" : "ffuf_{{latest}}_linux_amd64.tar.gz",
+                "outfile" : "ffuf_linux_amd64.tar.gz"
+            },
+            {
+                "type" : "extract",
+                "compression" : "targz",
+                "archive" : "ffuf_linux_amd64.tar.gz",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "ffuf",
+                "name" : "ffuf"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "foremost" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["foremost"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "john" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["john"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "metasploit" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["gnupg2"]
+            },
+            {
+                "type" : "wget",
+                "url" : "https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb"
+            },
+            {
+                "type" : "run",
+                "file" : "msfupdate.erb"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "mysql" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["mysql-client"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "ngrok" : {
+        "steps" : [
+            {
+                "type" : "wget",
+                "url" : "https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip"
+            },
+            {
+                "type" : "extract",
+                "archive" : "ngrok-stable-linux-amd64.zip",
+                "compression" : "zip",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "ngrok",
+                "name" : "ngrok"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "nikto" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["perl", "libnet-ssleay-perl"]
+            },
+            {
+                "type" : "git",
+                "repository" : "https://github.com/sullo/nikto.git"
+            },
+            {
+                "type" : "link",
+                "target" : "program/nikto.pl",
+                "name" : "nikto"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "nmap" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["nmap"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "php" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["php-cli", "php-curl", "php-json", "php-zip"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "pydictor" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/landgrey/pydictor.git"
+            },
+            {
+                "type" : "link",
+                "target" : "pydictor.py",
+                "name" : "pydictor"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "python3" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["python3", "python3-pip"]
+            },
+            {
+                "type" : "link",
+                "target" : "/bin/python3",
+                "name" : "/bin/python"
+            },
+            {
+                "type" : "link",
+                "target" : "/usr/bin/pip3",
+                "name" : "/usr/bin/pip"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "samdump2" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["samdump2"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "searchsploit.min" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/offensive-security/exploitdb.git",
+                "clean" : ["exploits", "shellcodes"]
+            },
+            {
+                "type" : "link",
+                "target" : "searchsploit",
+                "name" : "searchsploit"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "sherlock" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/sherlock-project/sherlock.git",
+                "clean" : ["images"]
+            },
+            {
+                "type" : "link",
+                "target" : "sherlock/sherlock.py",
+                "name" : "sherlock"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "sqlmap" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/sqlmapproject/sqlmap.git",
+                "clean" : [".??*", "doc"]
+            },
+            {
+                "type" : "link",
+                "target" : "sqlmap.py",
+                "name" : "sqlmap"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "utils" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "utils.min" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "file", "less"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "weevely" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/epinna/weevely3.git",
+                "clean" : ["*.yml", "tests"]
+            },
+            {
+                "type" : "link",
+                "target" : "weevely.py",
+                "name" : "weevely"
+            },
+            {
+                "type" : "pip",
+                "file" : "requirements.txt" 
+            }
+        ],
+        "dependency" : []
+    },
+
+    "wpscan" : {
+        "steps" : [],
+        "dependency" : []
+    },
+
+    "zsh-in-docker" : {
+        "steps" : [],
+        "dependency" : []
+    }
+}
