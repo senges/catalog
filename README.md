@@ -158,12 +158,14 @@ Supported compressions are :
 * tgz (.tgz)
 * targz (.tar.gz)
 
+`remove` option tells if archive should be remove after extraction or not.  
+
 ```json
 {
     "type" : "extract",
     "archive" : "mytool-linux-amd64.zip",
     "compression" : "zip",
-    "remove" : true  <-- remove archive after extraction
+    "remove" : true
 }
 ```
 
