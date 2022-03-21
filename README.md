@@ -26,7 +26,7 @@ Your tool is not available in Catalog database ? You can create your own procedu
 Installation procedures are defines as JSON objects.
 
 Each procedure is described as a collection of `steps`.  
-Available `step` types are described right after this section.
+Available `steps` types are described right after this section.
 
 ```json
 "mytool" : {
@@ -100,23 +100,28 @@ In the following example, `mytool.py` will be globally accessible in any shell a
 }
 ```
 
+```bash
+$  mytool
+It works globally !
+```
+
 **# git**
 
-Clone git repository.
+Clone a git repository.
 
-`clean` allows you to quickly remove unwanted files in the repository (already included : `.git*`, `*.md`, `.travis.yml`)
+*(optional)* `clean` allows you to quickly remove unwanted files in the repository (already included : `.git*`, `*.md`, `.travis.yml`)
 
 ```json
 {
     "type" : "git",
     "repository" : "https://github.com/foo/bar.git",
-    "clean" : ["images", "*.dat"]  <-- not mandatory
+    "clean" : ["images", "*.dat"]
 }
 ```
 
 **# github release**
 
-Will download github release archive. Keyword `{{latest}}` is available in order to follow dynamic archive naming process based on version number.
+Will download a github release archive. Keyword `{{latest}}` is available in order to follow dynamic archive naming based on version number.
 
 ```json
 {
