@@ -4,7 +4,24 @@ Catalog makes tool installation super easy, fast and clean.
 
 New environment ? Be ready in minuts !
 
+> Catalog is still under development and does only support apt based distributions for now. Feel free to improve.
+
 ## Basic usage
+
+```bash
+$  catalog --help
+usage: catalog.py [-h] [-i INFILE] [-f] [-v] [TOOL_NAME [TOOL_NAME ...]]
+
+positional arguments:
+  TOOL_NAME
+
+optional arguments:
+  -h, --help                    show this help message and exit
+  -i INFILE, --infile INFILE    tool list file
+  -f, --force                   force tool reinstall if present
+  -v, --verbose                 verbose mode
+
+```
 
 Feed catalog with a list of tools to install :
 
@@ -16,7 +33,9 @@ kubectl
 dirsearch
 htop
 
-$  catalog tools.txt
+$  catalog -i tools.txt
+
+$  catalog vscodium vim kubectl dirsearch htop
 ```
 
 ## Create installation procedure
