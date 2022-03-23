@@ -9,12 +9,12 @@
 import os
 import sys
 import json
-import requests
 import shutil
 
 from glob import glob
 from pathlib import Path
 from subprocess import STDOUT, check_call
+from urllib.request import Request, urlopen
 
 CONFIG_FILES = glob( '%s/static/*.json' % os.path.dirname(os.path.realpath(__file__)) )
 
@@ -134,10 +134,11 @@ class Installer:
         repo     = step.get('repository') 
         artifact = step.get('artifact') 
         outfile  = step.get('outfile')
-        
-        raw    = requests.get('https://api.github.com/repos/%s/releases' % repo).text
-        data   = json.loads(raw)
-        latest = data[0]['tag_name'][1:]
+
+        request  = Request('https://api.github.com/repos/%s/releases' % repo)
+        response = urlopen( request )
+        data     = json.load(response)
+        latest   = data[0]['tag_name'][1:]
         
         artifact = artifact.replace('{{latest}}', latest)
 
