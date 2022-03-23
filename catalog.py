@@ -136,11 +136,15 @@ class Installer:
         artifact = step.get('artifact') 
         outfile  = step.get('outfile')
 
-        request  = Request('https://api.github.com/repos/%s/releases' % repo)
-        response = urlopen( request )
-        data     = json.load(response)
-        latest   = data[0]['tag_name'][1:]
-        
+        try:
+            request  = Request('https://api.github.com/repos/%s/releases' % repo)
+            response = urlopen( request )
+            data     = json.load(response)
+            latest   = data[0]['tag_name'][1:]
+        except:
+            print('[!] Could not properly load url https://api.github.com/repos/%s/releases' % repo)
+            exit(1)
+    
         artifact = artifact.replace('{{latest}}', latest)
 
         return [[
