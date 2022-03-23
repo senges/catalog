@@ -80,12 +80,12 @@ class Installer:
     def _pip(self, step: dict):
 
         if pkg := step.get('packages'):
-            return [['pip', 'install', '--user'] + pkg]
+            return [['pip', 'install'] + pkg]
             
         requirements = step.get('file')
         requirements = self.mkpath(requirements)
 
-        return [['pip', 'install', '--user', '-r', requirements]]
+        return [['pip', 'install', '-r', requirements]]
 
     def _wget(self, step: dict):
         url = step.get('url')
