@@ -19,11 +19,41 @@
         "dependency" : []
     },
 
-    "php" : {
+    "at" : {
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["php-cli", "php-curl", "php-json", "php-zip"]
+                "packages" : ["at"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "dnsmasq" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["dnsmasq"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "htop" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["htop"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "jq" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["jq"]
             }
         ],
         "dependency" : []
@@ -34,6 +64,46 @@
             {
                 "type" : "apt",
                 "packages" : ["mysql-client"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "netcat" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["netcat-openbsd"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "openvpn" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["openvpn"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "php" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["php-cli", "php-curl", "php-json", "php-zip"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "wireguard" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["openvpn"]
             }
         ],
         "dependency" : []

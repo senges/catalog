@@ -68,29 +68,6 @@
         "dependency" : []
     },
 
-    "dog" : {
-        "steps" : [
-            {
-                "type" : "github_release",
-                "repository" : "ogham/dog",
-                "artifact" : "dog-v{{latest}}-x86_64-unknown-linux-gnu.zip",
-                "outfile" : "dog-linux-gnu.zip"
-            },
-            {
-                "type" : "extract",
-                "compression" : "zip",
-                "archive" : "dog-linux-gnu.zip",
-                "remove" : true
-            },
-            {
-                "type" : "link",
-                "target" : "bin/dog",
-                "name" : "dog"
-            }
-        ],
-        "dependency" : []
-    },
-
     "exiftool" : {
         "steps" : [
             {

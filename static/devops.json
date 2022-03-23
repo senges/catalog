@@ -1,0 +1,160 @@
+{
+    "ansible" : {
+        "steps" : [
+            {
+                "type" : "pip",
+                "packages" : ["ansible"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "aws-cli" : {
+        "steps" : [
+            {
+                "type" : "wget",
+                "url" : "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"
+            },
+            {
+                "type" : "extract",
+                "archive" : "awscli-exe-linux-x86_64.zip",
+                "compression" : "zip",
+                "remove" : true
+            },
+            {
+                "type" : "run",
+                "file" : "aws/install"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "azure-cli" : {
+        "steps" : [
+            {
+                "type" : "wget",
+                "url" : "https://aka.ms/InstallAzureCLIDeb"
+            },
+            {
+                "type" : "run",
+                "file" : "InstallAzureCLIDeb"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "docker-compose" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "docker/compose",
+                "artifact" : "docker-compose-linux-x86_64",
+                "outfile" : "docker-compose-linux-x86_64"
+            },
+            {
+                "type" : "link",
+                "target" : "docker-compose-linux-x86_64",
+                "name" : "docker-compose"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "dog" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "ogham/dog",
+                "artifact" : "dog-v{{latest}}-x86_64-unknown-linux-gnu.zip",
+                "outfile" : "dog-linux-gnu.zip"
+            },
+            {
+                "type" : "extract",
+                "compression" : "zip",
+                "archive" : "dog-linux-gnu.zip",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "bin/dog",
+                "name" : "dog"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "filezilla" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["filezilla"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "gradle" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["gradle"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "maven" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["maven"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "minikube" : {
+        "steps" : [
+            {
+                "type" : "wget",
+                "url" : "https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64"
+            },
+            {
+                "type" : "link",
+                "target" : "minikube-linux-amd64",
+                "name" : "minikube"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "vagrant" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["vagrant"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "virtualbox" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["virtualbox"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "tshark" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["tshark"]
+            }
+        ],
+        "dependency" : []
+    }
+}
