@@ -10,6 +10,7 @@ import os
 import sys
 import json
 import shutil
+import argparse
 
 from glob import glob
 from pathlib import Path
@@ -51,7 +52,7 @@ class Installer:
             if FORCE:
                 shutil.rmtree( self.wd )
             else:
-                print('[~] %s already installed, skipping' % self.tool)
+                print('\n[~] %s already installed, skipping' % self.tool)
                 return
 
         print('\n[+] Installing ' + self.tool)
@@ -217,9 +218,22 @@ def verbose(msg: str):
         print(msg)
 
 def main():
+    global VERBOSE
+    global FORCE
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-i', '--infile', help = 'Tool list file')
+    parser.add_argument('-f', '--force', help = 'Force tool reinstall if present', action = 'store_true')
+    parser.add_argument('-v', '--verbose', help = 'Verbose mode', action = 'store_true')
+    parser.add_argument('tools', metavar = 'TOOL_NAME', nargs = '*')
+
+    args = parser.parse_args()
+
+    VERBOSE = args.verbose
+    FORCE = args.force
 
     config_map = dict()
-    tool_list = []
+    tool_list = args.tools
 
     try:
         # Load config files
@@ -230,13 +244,14 @@ def main():
     except:
         raise Exception('Error loading config files')
 
-    try:
-        # Load tool file
-        with open( sys.argv[1] ) as f:
-            while tool := f.readline().rstrip():
-                tool_list.append(tool)
-    except:
-        raise Exception('Error loading tool list')
+    if args.infile:
+        try:
+            # Load tool file
+            with open( args.infile ) as f:
+                while tool := f.readline().rstrip():
+                    tool_list.append(tool)
+        except:
+            raise Exception('Error loading tool list')
     
     # Make sure installation folders are ready
     Path( '/opt/bin' ).mkdir(exist_ok = True, parents = True)
@@ -244,6 +259,8 @@ def main():
     # Foreach tool, follow install procedure
     for tool in tool_list:
         Installer( config_map, tool ).install()
+
+    print()
 
 if __name__ == '__main__':
     main()
