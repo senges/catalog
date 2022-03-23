@@ -172,16 +172,6 @@
         "dependency" : []
     },
 
-    "mysql" : {
-        "steps" : [
-            {
-                "type" : "apt",
-                "packages" : ["mysql-client"]
-            }
-        ],
-        "dependency" : []
-    },
-
     "ngrok" : {
         "steps" : [
             {
@@ -232,16 +222,6 @@
         "dependency" : []
     },
 
-    "php" : {
-        "steps" : [
-            {
-                "type" : "apt",
-                "packages" : ["php-cli", "php-curl", "php-json", "php-zip"]
-            }
-        ],
-        "dependency" : []
-    },
-
     "pydictor" : {
         "steps" : [
             {
@@ -252,26 +232,6 @@
                 "type" : "link",
                 "target" : "pydictor.py",
                 "name" : "pydictor"
-            }
-        ],
-        "dependency" : []
-    },
-
-    "python3" : {
-        "steps" : [
-            {
-                "type" : "apt",
-                "packages" : ["python3", "python3-pip"]
-            },
-            {
-                "type" : "link",
-                "target" : "/bin/python3",
-                "name" : "/bin/python"
-            },
-            {
-                "type" : "link",
-                "target" : "/usr/bin/pip3",
-                "name" : "/usr/bin/pip"
             }
         ],
         "dependency" : []
@@ -335,26 +295,6 @@
         "dependency" : []
     },
 
-    "utils" : {
-        "steps" : [
-            {
-                "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client"]
-            }
-        ],
-        "dependency" : []
-    },
-
-    "utils.min" : {
-        "steps" : [
-            {
-                "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "file", "less"]
-            }
-        ],
-        "dependency" : []
-    },
-
     "weevely" : {
         "steps" : [
             {
@@ -376,11 +316,6 @@
     },
 
     "wpscan" : {
-        "steps" : [],
-        "dependency" : []
-    },
-
-    "zsh-in-docker" : {
         "steps" : [],
         "dependency" : []
     }

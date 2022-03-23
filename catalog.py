@@ -12,10 +12,11 @@ import json
 import requests
 import shutil
 
+from glob import glob
 from pathlib import Path
 from subprocess import STDOUT, check_call
 
-CONFIG_FILE = '%s/static/tools.json' % os.path.dirname(os.path.realpath(__file__))
+CONFIG_FILES = glob( '%s/static/*.json' % os.path.dirname(os.path.realpath(__file__)) )
 
 VERBOSE = True
 FORCE = True
@@ -43,6 +44,7 @@ class Installer:
         }
 
     def install(self):
+        # NEED TO CHECK DEPENDENCY FIRST
 
         # Tool is already installed
         if os.path.exists( self.wd ):
@@ -215,28 +217,32 @@ def verbose(msg: str):
 
 def main():
 
+    config_map = dict()
     tool_list = []
 
     try:
-        # Load config 
-        # SHOULD LOAD ALL FILES FROM STATIC FOLDER
-        with open( CONFIG_FILE ) as f:
-            config = json.load(f)
+        # Load config files
+        for cf in CONFIG_FILES:
+            with open(cf, 'rb') as f:
+                config = json.load(f)
+                config_map = { **config_map, **config }
+    except:
+        raise Exception('Error loading config files')
 
+    try:
         # Load tool file
         with open( sys.argv[1] ) as f:
             while tool := f.readline().rstrip():
                 tool_list.append(tool)
-
     except:
-        raise Exception('Error loading on of the files')
+        raise Exception('Error loading tool list')
     
     # Make sure installation folders are ready
     Path( '/opt/bin' ).mkdir(exist_ok = True, parents = True)
 
     # Foreach tool, follow install procedure
     for tool in tool_list:
-        Installer( config, tool ).install()
+        Installer( config_map, tool ).install()
 
 if __name__ == '__main__':
     main()

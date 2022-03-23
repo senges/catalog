@@ -1,0 +1,46 @@
+{
+    "utils" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "utils.min" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "file", "less"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "php" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["php-cli", "php-curl", "php-json", "php-zip"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "mysql" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["mysql-client"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "zsh-in-docker" : {
+        "steps" : [],
+        "dependency" : []
+    }
+}
