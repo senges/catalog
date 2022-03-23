@@ -226,9 +226,9 @@ def main():
     global FORCE
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--infile', help = 'Tool list file')
-    parser.add_argument('-f', '--force', help = 'Force tool reinstall if present', action = 'store_true')
-    parser.add_argument('-v', '--verbose', help = 'Verbose mode', action = 'store_true')
+    parser.add_argument('-i', '--infile', help = 'tool list file')
+    parser.add_argument('-f', '--force', help = 'force tool reinstall if present', action = 'store_true')
+    parser.add_argument('-v', '--verbose', help = 'verbose mode', action = 'store_true')
     parser.add_argument('tools', metavar = 'TOOL_NAME', nargs = '*')
 
     args = parser.parse_args()

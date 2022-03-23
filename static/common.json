@@ -99,6 +99,16 @@
         "dependency" : []
     },
 
+    "vim" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["vim"]
+            }
+        ],
+        "dependency" : []
+    },
+
     "wireguard" : {
         "steps" : [
             {
