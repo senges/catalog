@@ -103,6 +103,42 @@
         "dependency" : []
     },
 
+    "gcloud-cli" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-transport-https", "ca-certificates", "gnupg"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["google-cloud-cli"],
+                "source" : {
+                    "repository" : "deb https://packages.cloud.google.com/apt cloud-sdk main",
+                    "key" : "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+                }
+            }
+        ],
+        "dependency" : []
+    },
+
+    "kubectl" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-transport-https"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["kubectl"],
+                "source" : {
+                    "repository" : "deb https://apt.kubernetes.io/ kubernetes-xenial main",
+                    "key" : "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+                }
+            }
+        ],
+        "dependency" : []
+    },
+
     "maven" : {
         "steps" : [
             {

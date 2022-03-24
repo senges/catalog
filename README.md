@@ -8,16 +8,17 @@ New environment ? Be ready in minuts !
 
 ## Basic usage
 
-```bash
+```text
 $  catalog --help
-usage: catalog.py [-h] [-i INFILE] [-f] [-v] [TOOL_NAME [TOOL_NAME ...]]
+usage: catalog.py [-h] [-i INFILE] [-l] [-f] [-v] [TOOL_NAME [TOOL_NAME ...]]
 
 positional arguments:
   TOOL_NAME
 
 optional arguments:
   -h, --help                    show this help message and exit
-  -i INFILE, --infile INFILE    tool list file
+  -i INFILE, --infile INFILE    input tool list file
+  -l, --list                    list available tools and exit
   -f, --force                   force tool reinstall if present
   -v, --verbose                 verbose mode
 
@@ -80,6 +81,19 @@ Tools are installed under `/opt/toolname`.
 }
 ```
 
+Custom apt source support :
+
+```json
+{
+    "type" : "apt",
+    "packages" : [ "tool" ],
+    "source" : {
+        "repository" : "deb https://apt.tool.io/ tool-sdk main",
+        "key" : "https://packages.tool.com/apt/apt-key.gpg"
+    }
+}
+```
+
 **# pip**
 
 ```json
@@ -119,7 +133,7 @@ In the following example, `mytool.py` will be globally accessible in any shell a
 }
 ```
 
-```bash
+```text
 $  mytool
 It works globally !
 ```
@@ -164,7 +178,7 @@ Run all kind of executable files.
 
 This is the equivalent of :
 
-```bash
+```text
 $  ./configure.sh
 ```
 

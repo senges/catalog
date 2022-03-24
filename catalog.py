@@ -76,7 +76,45 @@ class Installer:
     def _apt(self, step: dict):
         pkg = step.get('packages')
 
-        return [['apt', 'install', '-y', '--no-install-recommends'] + pkg]
+        cmd = []
+
+        # If any custom repo source to add
+        if source := step.get('source'):
+            repo = source.get('repository')
+            key = source.get('key')
+
+            # Download pgp key
+            cmd += self._wget({
+                'url' : key
+            })
+
+            _, keyname = os.path.split(key)
+
+            # Add pgp key
+            cmd.append(['apt-key', 'add', self.mkpath(keyname)])
+
+            # Remove pgp key file
+            cmd += self._rm({
+                'selectors' : [ keyname ]
+            })
+
+            sources = []
+
+            # Load installed source list
+            with open('/etc/apt/sources.list.d/catalog.list', 'r') as f:
+                while line := f.readline():
+                    sources.append(line.rstrip())
+
+            # Avoid duplicates
+            if repo not in sources:
+                with open('/etc/apt/sources.list.d/catalog.list', 'a') as f:
+                    f.write(repo + '\n')
+
+            cmd.append(['apt', 'update'])
+
+        cmd.append( ['apt', 'install', '-y', '--no-install-recommends'] + pkg )
+
+        return cmd
 
     def _pip(self, step: dict):
 
@@ -97,8 +135,6 @@ class Installer:
         return [['wget', '-O', path, '--no-check-certificate', url]]
 
     def _link(self, step: dict):
-        # Might extend to absolute path ?
-
         name = step.get('name')
         
         target = step.get('target')
@@ -156,8 +192,6 @@ class Installer:
         ]]
 
     def _run(self, step: dict):
-        # Maybe extend if heading slash ?
-
         path = step.get('file')
         path = self.mkpath(path)
 
@@ -226,7 +260,8 @@ def main():
     global FORCE
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--infile', help = 'tool list file')
+    parser.add_argument('-i', '--infile', help = 'input tool list file')
+    parser.add_argument('-l', '--list', help = 'list available tools and exit', action = 'store_true')
     parser.add_argument('-f', '--force', help = 'force tool reinstall if present', action = 'store_true')
     parser.add_argument('-v', '--verbose', help = 'verbose mode', action = 'store_true')
     parser.add_argument('tools', metavar = 'TOOL_NAME', nargs = '*')
@@ -247,6 +282,12 @@ def main():
                 config_map = { **config_map, **config }
     except:
         raise Exception('Error loading config files')
+
+    # List available installs and exit
+    if args.list:
+        available = sorted([x for x, _ in config_map.items()])
+        print( '\n'.join( available ) )
+        exit(0)
 
     if args.infile:
         try:
