@@ -70,7 +70,7 @@ Tools are installed under `/opt/toolname`.
 
 ***
 
-## Available `step` types
+## Available `steps` types
 
 **# apt**
 
@@ -191,7 +191,7 @@ Supported compressions are :
 * tgz (.tgz)
 * targz (.tar.gz)
 
-`remove` option tells if archive should be remove after extraction or not.  
+`remove` option tells if archive should be removed after extraction or not.  
 
 ```json
 {
