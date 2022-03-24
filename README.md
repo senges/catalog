@@ -6,6 +6,10 @@ New environment ? Be ready in minuts !
 
 > Catalog is still under development and does only support apt based distributions for now. Feel free to improve.
 
+## Requirements
+
+To work properly, Catalog needs `wget`, `zip`, `git`, `python3` and `python3-pip` packages installed.
+
 ## Basic usage
 
 ```text
