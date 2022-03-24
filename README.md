@@ -43,7 +43,7 @@ $  catalog vscodium vim kubectl dirsearch htop
 
 Your tool is not available in Catalog database ? You can create your own procedure.
 
-Installation procedures are defines as JSON objects.
+Installation procedures are defined as JSON objects.
 
 Each procedure is described as a collection of `steps`.  
 Available `steps` types are described right after this section.
