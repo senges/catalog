@@ -120,7 +120,19 @@
     },
 
     "zsh-in-docker" : {
-        "steps" : [],
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "deluan/zsh-in-docker",
+                "artifact" : "zsh-in-docker.sh",
+                "outfile" : "zsh-in-docker.sh"
+            },
+            {
+                "type" : "link",
+                "target" : "zsh-in-docker.sh",
+                "name" : "zsh-in-docker"
+            }
+        ],
         "dependency" : []
     }
 }
