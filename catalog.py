@@ -261,7 +261,8 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--infile', help = 'input tool list file')
-    parser.add_argument('-l', '--list', help = 'list available tools and exit', action = 'store_true')
+    parser.add_argument('-a', '--available', help = 'list available tools and exit', action = 'store_true')
+    parser.add_argument('-l', '--list', help = 'list installed tools and exit', action = 'store_true')
     parser.add_argument('-f', '--force', help = 'force tool reinstall if present', action = 'store_true')
     parser.add_argument('-v', '--verbose', help = 'verbose mode', action = 'store_true')
     parser.add_argument('tools', metavar = 'TOOL_NAME', nargs = '*')
@@ -284,9 +285,17 @@ def main():
         raise Exception('Error loading config files')
 
     # List available installs and exit
-    if args.list:
-        available = sorted([x for x, _ in config_map.items()])
+    if args.available:
+        available = sorted([x for x, _ in config_map.items()], key = str.casefold)
         print( '\n'.join( available ) )
+        exit(0)
+
+    # List installed tools and exit
+    if args.list:
+        _, tools, _ = next(os.walk('/opt'))
+        if 'bin' in tools:
+            tools.remove('bin')
+        print( '\n'.join(sorted( tools, key = str.casefold )))
         exit(0)
 
     if args.infile:
