@@ -101,9 +101,12 @@ class Installer:
             sources = []
 
             # Load installed source list
-            with open('/etc/apt/sources.list.d/catalog.list', 'r') as f:
-                while line := f.readline():
-                    sources.append(line.rstrip())
+            try:
+                with open('/etc/apt/sources.list.d/catalog.list', 'r') as f:
+                    while line := f.readline():
+                        sources.append(line.rstrip())
+            except FileNotFoundError:
+                pass
 
             # Avoid duplicates
             if repo not in sources:
