@@ -139,6 +139,16 @@
         "dependency" : []
     },
 
+    "kubectx" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["kubectx"]
+            }
+        ],
+        "dependency" : []
+    },
+
     "maven" : {
         "steps" : [
             {
