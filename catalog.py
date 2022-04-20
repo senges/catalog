@@ -56,7 +56,7 @@ class Installer:
                 return
 
         # Tool has no install candidate
-        if not self.config.get('steps'):
+        if not self.config:
             print('\n[~] %s is not available for install, skipping' % self.tool)
             return
 
