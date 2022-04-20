@@ -55,6 +55,11 @@ class Installer:
                 print('\n[~] %s already installed, skipping' % self.tool)
                 return
 
+        # Tool has no install candidate
+        if not self.config.get('steps'):
+            print('\n[~] %s is not available for install, skipping' % self.tool)
+            return
+
         print('\n[+] Installing ' + self.tool)
 
         # Create working directory
