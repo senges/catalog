@@ -41,6 +41,7 @@ class Installer:
             'rm'    : self._rm,
             'run'   : self._run,
             'git'   : self._git,
+            'shell' : self._shell,
             'extract' : self._extract,
             'github_release' : self._gh_release
         }
@@ -220,11 +221,8 @@ class Installer:
 
         return cmd
 
-    ## Run inline command
-    # def bash(self, step: dict):
-    #     raw = step.get('raw')
-    #
-    #     return [ raw.split(' ') ]
+    def _shell(self, step: dict):
+        return step.get('cmd')
 
     def _extract(self, step: dict):
 

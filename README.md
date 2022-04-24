@@ -235,3 +235,18 @@ Remove junk local files to save some disk space.
     "selectors" : ["data.sqlite", "*.??*"],
 }
 ```
+
+**# shell**
+
+> This is not recommanded way of usging Catalog.
+> Please make sure to use it with caution.
+> If install function is lacking, feel free to PR or open an issue in Catalog repo.
+
+Run custom shell command.
+
+```json
+{
+    "type" : "shell",
+    "cmd" : ["ls", "-lAh", "/tmp"],
+}
+```
