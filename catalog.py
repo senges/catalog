@@ -120,7 +120,7 @@ class Installer:
                 with open('/etc/apt/sources.list.d/catalog.list', 'a') as f:
                     f.write(repo + '\n')
 
-            cmd.append(['apt', 'update'])
+        cmd.append(['apt', 'update'])
 
         cmd.append( ['apt', 'install', '-y', '--no-install-recommends'] + pkg )
 
@@ -137,6 +137,11 @@ class Installer:
         return [['pip', 'install', '-r', requirements]]
 
     def _go(self, step: dict):
+        package = step.get('package')
+
+        return [['go', 'install', '-v', package]]
+
+    def _npm(self, step: dict):
         package = step.get('package')
 
         return [['go', 'install', '-v', package]]
@@ -259,6 +264,9 @@ def shell_run(args: [str]):
             env = env
         )
     except:
+        with open('/var/log/cata.log', 'r') as f:
+            verbose(f.read())
+        
         print('[!] Command execution has failed.')
         print('[!] Logs are availables at /var/log/cata.log')
         exit(1)
@@ -286,6 +294,7 @@ def main():
     parser.add_argument('-l', '--list', help = 'list installed tools and exit', action = 'store_true')
     parser.add_argument('-f', '--force', help = 'force tool reinstall if present', action = 'store_true')
     parser.add_argument('-v', '--verbose', help = 'verbose mode', action = 'store_true')
+    parser.add_argument('--rm-cache', help = 'removed any installation cache', action = 'store_true')
     parser.add_argument('tools', metavar = 'TOOL_NAME', nargs = '*')
 
     args = parser.parse_args()
@@ -334,6 +343,12 @@ def main():
     # Foreach tool, follow install procedure
     for tool in tool_list:
         Installer( config_map, tool ).install()
+
+    # Remove cache (to be improved)
+    if args.rm_cache:
+        print('\n[i] Removing cached data...')
+        shutil.rmtree( '/var/lib/apt/lists/' )
+        os.mkdir( '/var/lib/apt/lists/' )
 
     print()
 

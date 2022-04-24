@@ -3,7 +3,7 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client", "lsof"]
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client", "lsof"]
             }
         ],
         "dependency" : []
@@ -13,7 +13,7 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "file", "less"]
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "iputils-ping", "file", "less"]
             }
         ],
         "dependency" : []
@@ -44,6 +44,16 @@
             {
                 "type" : "apt",
                 "packages" : ["faketime"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "gem" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["gem"]
             }
         ],
         "dependency" : []
@@ -117,6 +127,16 @@
         "dependency" : []
     },
 
+    "npm" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["npm"]
+            }
+        ],
+        "dependency" : []
+    },
+
     "openvpn" : {
         "steps" : [
             {
@@ -132,6 +152,16 @@
             {
                 "type" : "apt",
                 "packages" : ["php-cli", "php-curl", "php-json", "php-zip"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "pip3" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["python3-pip"]
             }
         ],
         "dependency" : []
