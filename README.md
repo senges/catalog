@@ -1,14 +1,20 @@
 # Catalog
 
-Catalog makes tool installation super easy, fast and clean.
-
-New environment ? Be ready in minuts !
+Catalog makes tool installation inside containers super easy, fast and clean.
 
 > Catalog is still under development and does only support apt based distributions for now. Feel free to improve.
 
 ## Requirements
 
-To work properly, Catalog needs `wget`, `zip`, `git`, `python3` and `python3-pip` packages installed.
+To work properly, Catalog needs `python3` and `python3-pip` packages installed.
+
+## Docker base image
+
+```Dockerfile
+FROM catalog:latest
+
+RUN catalog -v vim htop mysql
+```
 
 ## Basic usage
 
