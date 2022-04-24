@@ -3,7 +3,7 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client"]
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client", "lsof"]
             }
         ],
         "dependency" : []
@@ -39,6 +39,16 @@
         "dependency" : []
     },
 
+    "faketime" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["faketime"]
+            }
+        ],
+        "dependency" : []
+    },
+
     "htop" : {
         "steps" : [
             {
@@ -64,6 +74,24 @@
             {
                 "type" : "apt",
                 "packages" : ["mysql-client"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "nala" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-transport-https", "ca-certificates", "gnupg"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["nala"],
+                "source" : {
+                    "repository" : "deb http://deb.volian.org/volian/ scar main",
+                    "key" : "https://deb.volian.org/volian/scar.key"
+                }
             }
         ],
         "dependency" : []
@@ -99,6 +127,16 @@
         "dependency" : []
     },
 
+    "thefuck" : {
+        "steps" : [
+            {
+                "type" : "pip",
+                "packages" : ["thefuck"]
+            }
+        ],
+        "dependency" : []
+    },
+
     "vim" : {
         "steps" : [
             {
@@ -114,6 +152,16 @@
             {
                 "type" : "apt",
                 "packages" : ["openvpn"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "xclip" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["xclip"]
             }
         ],
         "dependency" : []

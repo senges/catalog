@@ -1,9 +1,33 @@
 {
+    "angr" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["python3-dev", "libffi-dev", "build-essential"]
+            },
+            {
+                "type" : "pip",
+                "packages" : ["angr"]
+            }
+        ],
+        "dependency" : []
+    },
+
     "arjun" : {
         "steps" : [
             {
                 "type" : "pip",
                 "packages" : ["arjun"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "arsenal" : {
+        "steps" : [
+            {
+                "type" : "pip",
+                "packages" : ["arsenal-cli"]
             }
         ],
         "dependency" : []
@@ -68,6 +92,25 @@
         "dependency" : []
     },
 
+    "enum4linux-ng" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/cddmp/enum4linux-ng",
+            },
+            {
+                "type" : "pip",
+                "file" : "requirements.txt"
+            },
+            {
+                "type" : "link",
+                "target" : "enum4linux-ng.py",
+                "name" : "enum4linux-ng"
+            }
+        ],
+        "dependency" : []
+    },
+
     "exiftool" : {
         "steps" : [
             {
@@ -121,11 +164,31 @@
         "dependency" : []
     },
 
+    "gdb" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["gdb"]
+            }
+        ],
+        "dependency" : []
+    },
+
     "john" : {
         "steps" : [
             {
                 "type" : "apt",
                 "packages" : ["john"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "ltrace" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["ltrace"]
             }
         ],
         "dependency" : []
@@ -144,6 +207,29 @@
             {
                 "type" : "run",
                 "file" : "msfupdate.erb"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "mimikatz" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "gentilkiwi/mimikatz",
+                "artifact" : "mimikatz_trunk.zip",
+                "outfile" : "mimikatz_trunk.zip"
+            },
+            {
+                "type" : "extract",
+                "compression" : "zip",
+                "archive" : "mimikatz_trunk.zip",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "assetfinder",
+                "name" : "assetfinder"
             }
         ],
         "dependency" : []
@@ -199,6 +285,25 @@
         "dependency" : []
     },
 
+    "photon" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/s0md3v/photon"
+            },
+            {
+                "type" : "pip",
+                "file" : "requirements.txt" 
+            },
+            {
+                "type" : "link",
+                "target" : "photon.py",
+                "name" : "photon"
+            }
+        ],
+        "dependency" : []
+    },
+
     "pydictor" : {
         "steps" : [
             {
@@ -209,6 +314,48 @@
                 "type" : "link",
                 "target" : "pydictor.py",
                 "name" : "pydictor"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "pwndbg" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/pwndbg/pwndbg.git"
+            },
+            {
+                "type" : "run",
+                "file" : "setup.sh"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "pwntools" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["python3-dev", "libssl-dev", "libffi-dev", "build-essential"]
+            },
+            {
+                "type" : "pip",
+                "packages" : ["updog"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "radare2" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/radareorg/radare2"
+            },
+            {
+                "type" : "run",
+                "file" : "sys/install.sh"
             }
         ],
         "dependency" : []
@@ -267,6 +414,45 @@
                 "type" : "link",
                 "target" : "sqlmap.py",
                 "name" : "sqlmap"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "sublist3r" : {
+        "steps" : [
+            {
+                "type" : "git",
+                "repository" : "https://github.com/aboul3la/Sublist3r.git"
+            },
+            {
+                "type" : "pip",
+                "file" : "requirements.txt" 
+            },
+            {
+                "type" : "link",
+                "target" : "sublist3r.py",
+                "name" : "sublist3r"
+            }
+        ],
+        "dependency" : []
+    },
+
+    "toutatis" : {
+        "steps" : [
+            {
+                "type" : "pip",
+                "packages" : ["requests", "toutatis"]
+            }
+        ],
+        "dependency" : []
+    },
+
+    "updog" : {
+        "steps" : [
+            {
+                "type" : "pip",
+                "packages" : ["updog"]
             }
         ],
         "dependency" : []
