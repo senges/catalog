@@ -35,6 +35,7 @@ class Installer:
         self.functions_mapper = {
             'apt'   : self._apt,
             'pip'   : self._pip,
+            'go'    : self._go,
             'wget'  : self._wget,
             'link'  : self._link,
             'rm'    : self._rm,
@@ -133,6 +134,11 @@ class Installer:
         requirements = self.mkpath(requirements)
 
         return [['pip', 'install', '-r', requirements]]
+
+    def _go(self, step: dict):
+        package = step.get('package')
+
+        return [['go', 'install', '-v', package]]
 
     def _wget(self, step: dict):
         url = step.get('url')
@@ -244,11 +250,15 @@ class Installer:
         return cmd
 
 def shell_run(args: [str]):
+    env = os.environ
+    env['GOPATH'] = env['HOME'] + '/.go'
+
     try:
         check_call(
             args,
             stdout = open( '/var/log/cata.log', 'a' ), 
-            stderr = STDOUT
+            stderr = STDOUT,
+            env = env
         )
     except:
         print('[!] Command execution has failed.')

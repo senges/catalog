@@ -49,6 +49,16 @@
         "dependency" : []
     },
 
+    "golang" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["golang"]
+            }
+        ],
+        "dependency" : []
+    },
+
     "htop" : {
         "steps" : [
             {

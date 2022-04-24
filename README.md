@@ -114,6 +114,15 @@ Custom apt source support :
 }
 ```
 
+**# go**
+
+```json
+{
+    "type" : "go",
+    "package" : "github.com/user/tool@latest"
+}
+```
+
 **# wget**
 
 ```json
