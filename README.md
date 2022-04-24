@@ -123,6 +123,16 @@ Custom apt source support :
 }
 ```
 
+Custom outfile :
+
+```json
+{
+    "type" : "wget",
+    "url" : "https://get.site.com",
+    "outfile" : "install.sh"
+}
+```
+
 **# link**
 
 Create a symlink to the tool in order to make it available in user $PATH.

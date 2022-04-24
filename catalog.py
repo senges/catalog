@@ -136,8 +136,13 @@ class Installer:
 
     def _wget(self, step: dict):
         url = step.get('url')
+        outfile = step.get('outfile')
 
-        _, filename = os.path.split(url)
+        if outfile:
+            filename = outfile
+        else:
+            _, filename = os.path.split(url)
+
         path = os.path.join(self.wd, filename)
 
         return [['wget', '-O', path, '--no-check-certificate', url]]
