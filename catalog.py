@@ -11,6 +11,7 @@ import sys
 import json
 import shutil
 import argparse
+import datetime
 
 from glob import glob
 from pathlib import Path
@@ -21,6 +22,8 @@ CONFIG_FILES = glob( '%s/static/*.json' % os.path.dirname(os.path.realpath(__fil
 
 VERBOSE = True
 FORCE = True
+INSTALL_DEPENDENCIES = False
+IGNORE_DEPENDENCIES = False
 
 class Installer:
 
@@ -28,6 +31,7 @@ class Installer:
 
         self.wd = '/opt/%s' % tool
         self.config = config.get(tool)
+        self.config_map = config
         self.tool = tool
 
         self.mkpath = lambda x: os.path.join(self.wd, x)
@@ -47,7 +51,6 @@ class Installer:
         }
 
     def install(self):
-        # NEED TO CHECK DEPENDENCY FIRST
 
         # Tool is already installed
         if os.path.exists( self.wd ):
@@ -63,6 +66,10 @@ class Installer:
             return
 
         print('\n[+] Installing ' + self.tool)
+
+        # Install dependencies first if any
+        for dependency in self.config.get('dependencie', []):
+            self._dependency(dependency)
 
         # Create working directory
         Path( self.wd ).mkdir(exist_ok = True, parents = True)
@@ -80,6 +87,24 @@ class Installer:
                 verbose( ' '.join(cmd) )
                 shell_run( cmd )
 
+        # Keep trace of tool installation
+        trace = os.path.join('/opt/.catalog/tools', self.tool)
+        with open(trace) as f:
+            f.write( datetime.datetime.now() )
+
+    # Check that dependency is satisfied
+    def _dependency(self, name: str):
+        path = os.path.join('/opt/.catalog/tools', name)
+
+        if os.path.exists( path ): return
+
+        if INSTALL_DEPENDENCIES:
+            print('\n[i] Installing dependency ' + self.tool)
+            Installer(self.config_map, name).install()
+
+        elif not IGNORE_DEPENDENCIES:
+            print('[!] Unsatisfied dependency : %s' % name)
+                
     def _apt(self, step: dict):
         pkg = step.get('packages')
 
@@ -144,7 +169,14 @@ class Installer:
     def _npm(self, step: dict):
         package = step.get('package')
 
-        return [['go', 'install', '-v', package]]
+        cmd = [['npm', 'install', '--prefix', '/opt/' + package, package]]
+
+        cmd += self._link({
+            'name' : package,
+            'target' : os.path.join(self.wd, 'node_modules/.bin/%s' % package)
+        })
+
+        return cmd
 
     def _wget(self, step: dict):
         url = step.get('url')
@@ -254,8 +286,10 @@ class Installer:
 
 def shell_run(args: [str]):
     env = os.environ
-    env['GOPATH'] = env['HOME'] + '/.go'
-
+    
+    env['GOPATH'] = env['HOME'] + '/.go'            # To update with /opt managed folder
+    env['PYTHONPATH'] = env['HOME'] + '/.python'    # To update with /opt managed folder
+    
     try:
         check_call(
             args,
@@ -294,7 +328,11 @@ def main():
     parser.add_argument('-l', '--list', help = 'list installed tools and exit', action = 'store_true')
     parser.add_argument('-f', '--force', help = 'force tool reinstall if present', action = 'store_true')
     parser.add_argument('-v', '--verbose', help = 'verbose mode', action = 'store_true')
+    # parser.add_argument('-d', '--dind', help = 'use docker in docker provided installers (pip, go, npm..)', action = 'store_true')
     parser.add_argument('--rm-cache', help = 'removed any installation cache', action = 'store_true')
+    # parser.add_argument('--dry-run', help = 'run catalog noramlly but do not install anything', action = 'store_true')
+    # parser.add_argument('--install-dependencies', help = 'install any required dependency', action = 'store_true')
+    # parser.add_argument('--keep-installers', help = 'keep any installer', action = 'store_true')
     parser.add_argument('tools', metavar = 'TOOL_NAME', nargs = '*')
 
     args = parser.parse_args()
