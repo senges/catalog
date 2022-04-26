@@ -167,6 +167,8 @@ $  mytool
 It works globally !
 ```
 
+> `target` field supports glob expansion.
+
 **# git**
 
 Clone a git repository.
@@ -183,7 +185,7 @@ Clone a git repository.
 
 **# github release**
 
-Will download a github release archive. Keyword `{{latest}}` is available in order to follow dynamic archive naming based on version number.
+Will download a github release artifact archive. Keyword `{{latest}}` is available in order to follow dynamic archive naming based on version number.
 
 ```json
 {
@@ -191,6 +193,23 @@ Will download a github release archive. Keyword `{{latest}}` is available in ord
     "repository" : "foo/bar",
     "artifact" : "mytool-v{{latest}}-linux-adm64.zip",
     "outfile" : "mytool-linux-amd64.zip"
+}
+```
+
+You can also download release source code, either in `tar.gz` or `zip` archive. Use syntax `FORMAT@TAG`.
+
+```json
+{
+    "type" : "github_release",
+    "repository" : "foo/bar",
+    "artifact" : "tar.gz@{{latest}}",
+    "outfile" : "mytool.tgz"
+},
+{
+    "type" : "github_release",
+    "repository" : "foo/bar",
+    "artifact" : "zip@9.0.2",
+    "outfile" : "mytool.zip"
 }
 ```
 
@@ -211,6 +230,8 @@ This is the equivalent of :
 $  ./configure.sh
 ```
 
+> `file` field supports glob expansion.
+
 **# extract**
 
 Extract compressed archive.
@@ -230,6 +251,8 @@ Supported compressions are :
     "remove" : true
 }
 ```
+
+> `archive` field supports glob expansion.
 
 **# rm**
 

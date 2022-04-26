@@ -3,7 +3,7 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client", "lsof"]
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client", "lsof"]
             }
         ],
         "dependencies" : []
@@ -13,7 +13,7 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "iputils-ping", "file", "less"]
+                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "iputils-ping", "file", "less"]
             }
         ],
         "dependencies" : []
@@ -44,6 +44,16 @@
             {
                 "type" : "apt",
                 "packages" : ["faketime"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "gcc" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["gcc"]
             }
         ],
         "dependencies" : []
@@ -84,6 +94,16 @@
             {
                 "type" : "apt",
                 "packages" : ["jq"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "make" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["make"]
             }
         ],
         "dependencies" : []

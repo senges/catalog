@@ -45,6 +45,7 @@ class Installer:
         self.tool = tool
 
         self.mkpath = lambda x: os.path.join(self.wd, x)
+        self.expand = lambda x: glob(x)[0]
 
         self.functions_mapper = {
             'apt'   : self._apt,
@@ -55,6 +56,7 @@ class Installer:
             'link'  : self._link,
             'rm'    : self._rm,
             'run'   : self._run,
+            'make'   : self._make,
             'git'   : self._git,
             'shell' : self._shell,
             'extract' : self._extract,
@@ -79,9 +81,8 @@ class Installer:
         print('\n[+] Installing ' + self.tool)
 
         # Install dependencies first if any
-        if not Config.ignore_dependencies():
-            for dependency in self.config.get('dependencie', []):
-                self._dependency(dependency)
+        for dependency in self.config.get('dependencies', []):
+            self._dependency(dependency)
 
         # Create working directory
         if not Config.DRY_RUN:
@@ -100,8 +101,8 @@ class Installer:
                 verbose( ' '.join(cmd) )
                 if not Config.DRY_RUN: 
                     shell_run( cmd )
-                verbose('=> Ok')
-                
+                    verbose('=> Ok')
+
         # Keep trace of tool installation
         trace = os.path.join('/opt/.catalog/tools', self.tool)
         with open(trace, 'w+') as f:
@@ -114,12 +115,12 @@ class Installer:
         if os.path.exists( path ): return
 
         if Config.satisfy_dependencies():
-            print('\n[i] Installing dependency ' + self.tool)
+            print('\n[i] Installing dependency ' + name)
             Installer(self.config_map, name).install()
             return
 
         elif Config().ignore_dependencies():
-            print('\n[i] Ignoring unsatisfied dependency ' + self.tool)
+            print('\n[i] Ignoring unsatisfied dependency ' + name)
             return
 
         print('[!] Unsatisfied dependency : %s' % name)
@@ -216,6 +217,7 @@ class Installer:
         
         target = step.get('target')
         target = self.mkpath(target)
+        target = self.expand(target)
 
         cmd = []
         cmd.append([ 'chmod', '+x', target ])
@@ -223,6 +225,23 @@ class Installer:
 
         return cmd
 
+    def _make(self, step: dict):
+        arguments = step.get('arguments')
+        path = step.get('path')
+
+        cmd = [ 'make' ]
+
+        if path:
+            path = self.expand(path)
+            cmd += ['-C', path]
+
+        if arguments:
+            cmd += arguments
+        
+        return [ cmd ]
+
+    # Broken glob selecor.
+    # Need to be fixed as not functionnal yet.
     def _rm(self, step: dict):
         selectors = step.get('selectors')
         path = '%s/{%s}' % (self.wd, ','.join(selectors))
@@ -249,28 +268,41 @@ class Installer:
         artifact = step.get('artifact') 
         outfile  = step.get('outfile')
 
+        api = 'https://api.github.com/repos/%s' % repo
+        url = 'https://github.com/%s' % repo
+        
         try:
-            request  = Request('https://api.github.com/repos/%s/releases' % repo)
+            request  = Request('%s/releases' % api)
             response = urlopen( request )
             data     = json.load(response)
             latest   = data[0]['tag_name'][1:]
         except:
-            print('[!] Could not properly load url https://api.github.com/repos/%s/releases' % repo)
+            print('[!] Could not properly load url %s/releases' % api)
             exit(1)
-    
+
         artifact = artifact.replace('{{latest}}', latest)
 
-        return [[
-            'wget', 'https://github.com/%s/releases/download/v%s/%s' % (repo, latest, artifact),
-            '-O', self.mkpath(outfile),
-            '--retry-connrefused',
-            '--waitretry=5',
-            '-t', '2'
-        ]]
+        # Github API has been a pain in the a** since the beginning.
+        # Sticking to it is fastidious and provide complicated inconvenient code.
+        # Browser download works like a charm, I will focus on this solution for now.
+
+        if artifact.startswith(('tar.gz@', 'zip@')):
+            form, version = artifact.split('@')
+            url = '%s/archive/refs/tags/v%s.%s' % (url, version, form)
+        else:
+            url = '%s/releases/download/v%s/%s' %  (repo, latest, artifact)
+
+        cmd = [ 'wget', url, '-O', self.mkpath(outfile) ]
+        cmd.append('--retry-connrefused')
+        cmd.append('--waitretry=5')
+        cmd.append('--tries=2')
+
+        return [ cmd ]
 
     def _run(self, step: dict):
         path = step.get('file')
         path = self.mkpath(path)
+        path = self.expand(path)
 
         cmd = []
         cmd.append([ 'chmod', '+x', path ])
@@ -287,7 +319,7 @@ class Installer:
         remove      = step.get('remove')
         archive     = step.get('archive')
         archive     = self.mkpath(archive)
-
+        archive     = self.expand(archive)
         cmd = []
 
         if compression == 'tgz':
