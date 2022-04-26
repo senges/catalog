@@ -6,7 +6,7 @@
                 "packages" : ["ansible"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "aws-cli" : {
@@ -26,7 +26,7 @@
                 "file" : "aws/install"
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "azure-cli" : {
@@ -40,7 +40,7 @@
                 "file" : "InstallAzureCLIDeb"
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "docker-compose" : {
@@ -57,7 +57,7 @@
                 "name" : "docker-compose"
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "dog" : {
@@ -80,7 +80,7 @@
                 "name" : "dog"
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "filezilla" : {
@@ -90,7 +90,7 @@
                 "packages" : ["filezilla"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "gradle" : {
@@ -100,7 +100,7 @@
                 "packages" : ["gradle"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "gcloud-cli" : {
@@ -118,7 +118,7 @@
                 }
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "kubectl" : {
@@ -136,7 +136,7 @@
                 }
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "kubectx" : {
@@ -146,7 +146,7 @@
                 "packages" : ["kubectx"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "maven" : {
@@ -156,7 +156,7 @@
                 "packages" : ["maven"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "minikube" : {
@@ -171,7 +171,7 @@
                 "name" : "minikube"
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "pulumi" : {
@@ -186,7 +186,7 @@
                 "file" : "install.sh"
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "scw" : {
@@ -203,7 +203,7 @@
                 "name" : "scw"
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "vagrant" : {
@@ -213,7 +213,7 @@
                 "packages" : ["vagrant"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "virtualbox" : {
@@ -223,7 +223,7 @@
                 "packages" : ["virtualbox"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "tshark" : {
@@ -233,6 +233,6 @@
                 "packages" : ["tshark"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     }
 }

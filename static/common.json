@@ -6,7 +6,7 @@
                 "packages" : ["tzdata", "git", "wget", "curl", "zip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client", "lsof"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "utils.min" : {
@@ -16,7 +16,7 @@
                 "packages" : ["tzdata", "git", "wget", "curl", "zip", "iputils-ping", "file", "less"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "at" : {
@@ -26,7 +26,7 @@
                 "packages" : ["at"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "dnsmasq" : {
@@ -36,7 +36,7 @@
                 "packages" : ["dnsmasq"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "faketime" : {
@@ -46,7 +46,7 @@
                 "packages" : ["faketime"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "gem" : {
@@ -56,7 +56,7 @@
                 "packages" : ["gem"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "golang" : {
@@ -66,7 +66,7 @@
                 "packages" : ["golang"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "htop" : {
@@ -76,7 +76,7 @@
                 "packages" : ["htop"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "jq" : {
@@ -86,7 +86,7 @@
                 "packages" : ["jq"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "mysql" : {
@@ -96,7 +96,7 @@
                 "packages" : ["mysql-client"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "nala" : {
@@ -114,7 +114,7 @@
                 }
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "netcat" : {
@@ -124,17 +124,29 @@
                 "packages" : ["netcat-openbsd"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
-    "npm" : {
+    "node" : {
         "steps" : [
             {
-                "type" : "apt",
-                "packages" : ["npm"]
+                "type" : "github_release",
+                "repository" : "nvm-sh/nvm",
+                "artifact" : "{{latest}}.zip",
+                "outfile" : "nvm.tgz"
+            },
+            {
+                "type" : "extract",
+                "compression" : "zip",
+                "archive" : "nvm.zip",
+                "remove" : true
+            },
+            {
+                "type" : "run",
+                "file" : ""
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "openvpn" : {
@@ -144,7 +156,7 @@
                 "packages" : ["openvpn"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "php" : {
@@ -154,7 +166,7 @@
                 "packages" : ["php-cli", "php-curl", "php-json", "php-zip"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "pip3" : {
@@ -164,7 +176,7 @@
                 "packages" : ["python3-pip"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "thefuck" : {
@@ -174,7 +186,7 @@
                 "packages" : ["thefuck"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "vim" : {
@@ -184,7 +196,7 @@
                 "packages" : ["vim"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "wireguard" : {
@@ -194,7 +206,7 @@
                 "packages" : ["openvpn"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "xclip" : {
@@ -204,7 +216,7 @@
                 "packages" : ["xclip"]
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     },
 
     "zsh-in-docker" : {
@@ -221,6 +233,6 @@
                 "name" : "zsh-in-docker"
             }
         ],
-        "dependency" : []
+        "dependencie" : []
     }
 }
