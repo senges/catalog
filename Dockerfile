@@ -9,14 +9,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 ENV PATH="${PATH}:/opt/bin"
 
-COPY . /opt/catalog
-
 RUN mkdir -p /opt/bin \
     && apt update \
     && apt install -y --no-install-recommends python3 python3-pip \
     && rm -rf /var/lib/apt/lists/* \
     && ln -fs "$(which python3)" /bin/python \
-    && ln -fs "$(which pip3)" /bin/pip \
-    && ln -fs /opt/catalog/catalog.py /opt/bin/catalog
+    && ln -fs "$(which pip3)" /bin/pip
 
-RUN catalog --rm-cache -v utils.min npm golang gem 
+COPY . /opt/catalog
+
+RUN ln -fs /opt/catalog/catalog.py /opt/bin/catalog \
+    && catalog --rm-cache -v utils.min npm golang gem 

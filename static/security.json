@@ -10,7 +10,7 @@
                 "packages" : ["angr"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "arjun" : {
@@ -20,7 +20,7 @@
                 "packages" : ["arjun"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "arsenal" : {
@@ -30,7 +30,7 @@
                 "packages" : ["arsenal-cli"]
             }
         ],
-        "dependencies" : []
+        "dependenciess" : []
     },
 
     "assetfinder" : {
@@ -53,7 +53,7 @@
                 "name" : "assetfinder"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "cupp" : {
@@ -69,7 +69,7 @@
                 "name" : "cupp"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "dirsearch" : {
@@ -89,7 +89,7 @@
                 "file" : "requirements.txt"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "enum4linux-ng" : {
@@ -108,7 +108,7 @@
                 "name" : "enum4linux-ng"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "exiftool" : {
@@ -118,7 +118,7 @@
                 "packages" : ["exiftool"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "fcrackzip" : {
@@ -128,7 +128,7 @@
                 "packages" : ["fcrackzip"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "ffuf" : {
@@ -151,7 +151,7 @@
                 "name" : "ffuf"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "foremost" : {
@@ -161,7 +161,7 @@
                 "packages" : ["foremost"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "gdb" : {
@@ -171,17 +171,17 @@
                 "packages" : ["gdb"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "github-email" : {
         "steps" : [
             {
                 "type" : "npm",
-                "package" : "github-email"
+                "packages" : [ "github-email" ]
             }
         ],
-        "dependencie" : [ "curl", "jq" ]
+        "dependencies" : [ "curl", "jq" ]
     },
 
     "gobuster" : {
@@ -209,7 +209,7 @@
                 "packages" : ["john"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "ltrace" : {
@@ -219,7 +219,7 @@
                 "packages" : ["ltrace"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "metasploit" : {
@@ -237,7 +237,7 @@
                 "file" : "msfupdate.erb"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "ngrok" : {
@@ -258,7 +258,7 @@
                 "name" : "ngrok"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "nikto" : {
@@ -277,7 +277,7 @@
                 "name" : "nikto"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "nmap" : {
@@ -287,7 +287,7 @@
                 "packages" : ["nmap"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "photon" : {
@@ -306,7 +306,7 @@
                 "name" : "photon"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "pydictor" : {
@@ -321,7 +321,7 @@
                 "name" : "pydictor"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "pwndbg" : {
@@ -335,7 +335,7 @@
                 "file" : "setup.sh"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "pwntools" : {
@@ -349,7 +349,7 @@
                 "packages" : ["updog"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "radare2" : {
@@ -363,7 +363,7 @@
                 "file" : "sys/install.sh"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "samdump2" : {
@@ -373,7 +373,7 @@
                 "packages" : ["samdump2"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "searchsploit.min" : {
@@ -389,7 +389,7 @@
                 "name" : "searchsploit"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "sherlock" : {
@@ -405,7 +405,7 @@
                 "name" : "sherlock"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "sqlmap" : {
@@ -421,7 +421,7 @@
                 "name" : "sqlmap"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "subfinder" : {
@@ -449,7 +449,17 @@
                 "name" : "sublist3r"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
+    },
+
+    "tiktok-scraper" : {
+        "steps" : [
+            {
+                "type" : "npm",
+                "packages" : [ "tiktok-scraper" ]
+            }
+        ],
+        "dependencies" : [ "python" ]
     },
 
     "toutatis" : {
@@ -459,7 +469,7 @@
                 "packages" : ["requests", "toutatis"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "updog" : {
@@ -469,7 +479,7 @@
                 "packages" : ["updog"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "weevely" : {
@@ -489,11 +499,11 @@
                 "file" : "requirements.txt" 
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "wpscan" : {
         "steps" : [],
-        "dependencie" : []
+        "dependencies" : []
     }
 }

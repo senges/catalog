@@ -20,10 +20,20 @@ from urllib.request import Request, urlopen
 
 CONFIG_FILES = glob( '%s/static/*.json' % os.path.dirname(os.path.realpath(__file__)) )
 
-VERBOSE = True
-FORCE = True
-INSTALL_DEPENDENCIES = False
-IGNORE_DEPENDENCIES = False
+class Config:
+    VERBOSE = False
+    DEBUG = False
+    FORCE = False
+    DRY_RUN = False
+    DEPENDENCIES = 'fail'
+
+    @classmethod
+    def ignore_dependencies(cls):
+        return cls.DEPENDENCIES == 'ignore'
+
+    @classmethod
+    def satisfy_dependencies(cls):
+        return cls.DEPENDENCIES == 'satisfy'
 
 class Installer:
 
@@ -39,6 +49,7 @@ class Installer:
         self.functions_mapper = {
             'apt'   : self._apt,
             'pip'   : self._pip,
+            'npm'   : self._npm,
             'go'    : self._go,
             'wget'  : self._wget,
             'link'  : self._link,
@@ -47,14 +58,14 @@ class Installer:
             'git'   : self._git,
             'shell' : self._shell,
             'extract' : self._extract,
-            'github_release' : self._gh_release
+            'github_release' : self._github_release
         }
 
     def install(self):
 
         # Tool is already installed
         if os.path.exists( self.wd ):
-            if FORCE:
+            if Config.FORCE and not Config.DRY_RUN:
                 shutil.rmtree( self.wd )
             else:
                 print('\n[~] %s already installed, skipping' % self.tool)
@@ -68,29 +79,33 @@ class Installer:
         print('\n[+] Installing ' + self.tool)
 
         # Install dependencies first if any
-        for dependency in self.config.get('dependencie', []):
-            self._dependency(dependency)
+        if not Config.ignore_dependencies():
+            for dependency in self.config.get('dependencie', []):
+                self._dependency(dependency)
 
         # Create working directory
-        Path( self.wd ).mkdir(exist_ok = True, parents = True)
+        if not Config.DRY_RUN:
+            Path( self.wd ).mkdir(exist_ok = True, parents = True)
 
         for step in self.config.get('steps'):
             action = step.get('type')
             
             if not action in self.functions_mapper:
-                print('[-] %s step type does not exist. Aborting.')
+                print('[-] %s step type does not exist. Aborting.' % action)
                 break
 
             cmdset = self.functions_mapper[ action ](step)
 
             for cmd in cmdset:
                 verbose( ' '.join(cmd) )
-                shell_run( cmd )
-
+                if not Config.DRY_RUN: 
+                    shell_run( cmd )
+                verbose('=> Ok')
+                
         # Keep trace of tool installation
         trace = os.path.join('/opt/.catalog/tools', self.tool)
-        with open(trace) as f:
-            f.write( datetime.datetime.now() )
+        with open(trace, 'w+') as f:
+            f.write( str(datetime.datetime.now()) )
 
     # Check that dependency is satisfied
     def _dependency(self, name: str):
@@ -98,12 +113,17 @@ class Installer:
 
         if os.path.exists( path ): return
 
-        if INSTALL_DEPENDENCIES:
+        if Config.satisfy_dependencies():
             print('\n[i] Installing dependency ' + self.tool)
             Installer(self.config_map, name).install()
+            return
 
-        elif not IGNORE_DEPENDENCIES:
-            print('[!] Unsatisfied dependency : %s' % name)
+        elif Config().ignore_dependencies():
+            print('\n[i] Ignoring unsatisfied dependency ' + self.tool)
+            return
+
+        print('[!] Unsatisfied dependency : %s' % name)
+        exit(1)
                 
     def _apt(self, step: dict):
         pkg = step.get('packages')
@@ -145,8 +165,7 @@ class Installer:
                 with open('/etc/apt/sources.list.d/catalog.list', 'a') as f:
                     f.write(repo + '\n')
 
-        cmd.append(['apt', 'update'])
-
+        cmd.append( ['apt', 'update'] )
         cmd.append( ['apt', 'install', '-y', '--no-install-recommends'] + pkg )
 
         return cmd
@@ -167,14 +186,15 @@ class Installer:
         return [['go', 'install', '-v', package]]
 
     def _npm(self, step: dict):
-        package = step.get('package')
+        packages = step.get('packages')
+        cmd = []
 
-        cmd = [['npm', 'install', '--prefix', '/opt/' + package, package]]
-
-        cmd += self._link({
-            'name' : package,
-            'target' : os.path.join(self.wd, 'node_modules/.bin/%s' % package)
-        })
+        for package in packages:
+            cmd.append( ['npm', 'install', '--prefix', self.wd, package] )
+            cmd += self._link({
+                'name' : package,
+                'target' : os.path.join(self.wd, 'node_modules/.bin/%s' % package)
+            })
 
         return cmd
 
@@ -224,7 +244,7 @@ class Installer:
 
         return cmd
 
-    def _gh_release(self, step: dict):
+    def _github_release(self, step: dict):
         repo     = step.get('repository') 
         artifact = step.get('artifact') 
         outfile  = step.get('outfile')
@@ -299,8 +319,8 @@ def shell_run(args: [str]):
         )
     except:
         with open('/var/log/cata.log', 'r') as f:
-            verbose(f.read())
-        
+            debug(f.read())
+  
         print('[!] Command execution has failed.')
         print('[!] Logs are availables at /var/log/cata.log')
         exit(1)
@@ -315,12 +335,14 @@ def untargz(archive: str, target: str) -> [str]:
     return ['tar', '-vzxf', archive, '-C', target]
 
 def verbose(msg: str):
-    if VERBOSE:
+    if Config.VERBOSE:
+        print(msg)
+
+def debug(msg: str):
+    if Config.DEBUG:
         print(msg)
 
 def main():
-    global VERBOSE
-    global FORCE
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--infile', help = 'input tool list file')
@@ -328,17 +350,24 @@ def main():
     parser.add_argument('-l', '--list', help = 'list installed tools and exit', action = 'store_true')
     parser.add_argument('-f', '--force', help = 'force tool reinstall if present', action = 'store_true')
     parser.add_argument('-v', '--verbose', help = 'verbose mode', action = 'store_true')
+    parser.add_argument('--debug', help = 'run catalog in debug mode', action = 'store_true')
     # parser.add_argument('-d', '--dind', help = 'use docker in docker provided installers (pip, go, npm..)', action = 'store_true')
     parser.add_argument('--rm-cache', help = 'removed any installation cache', action = 'store_true')
-    # parser.add_argument('--dry-run', help = 'run catalog noramlly but do not install anything', action = 'store_true')
-    # parser.add_argument('--install-dependencies', help = 'install any required dependency', action = 'store_true')
+    parser.add_argument('--dry-run', help = 'run catalog in verbose but do not install anything', action = 'store_true')
+    parser.add_argument('--dependencies', help = 'dependencies behavior', default = 'fail', choices = ['fail', 'ignore', 'satisfy'])
     # parser.add_argument('--keep-installers', help = 'keep any installer', action = 'store_true')
     parser.add_argument('tools', metavar = 'TOOL_NAME', nargs = '*')
 
     args = parser.parse_args()
 
-    VERBOSE = args.verbose
-    FORCE = args.force
+    Config.VERBOSE = args.verbose
+    Config.DEBUG = args.debug
+    Config.FORCE = args.force
+    Config.DRY_RUN = args.dry_run
+    Config.DEPENDENCIES = args.dependencies
+
+    # Dry run infer verbose mode
+    if Config.DRY_RUN: Config.VERBOSE = True
 
     config_map = dict()
     tool_list = args.tools
@@ -376,7 +405,12 @@ def main():
             raise Exception('Error loading tool list')
     
     # Make sure installation folders are ready
-    Path( '/opt/bin' ).mkdir(exist_ok = True, parents = True)
+    try:
+        Path( '/opt/bin' ).mkdir(exist_ok = True, parents = True)
+        Path( '/opt/.catalog/tools' ).mkdir(exist_ok = True, parents = True)
+    except PermissionError:
+        print('[!] Got permission denied on \'/opt\' folder.')
+        exit(1)
 
     # Foreach tool, follow install procedure
     for tool in tool_list:

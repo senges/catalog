@@ -6,7 +6,7 @@
                 "packages" : ["tzdata", "git", "wget", "curl", "zip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client", "lsof"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "utils.min" : {
@@ -16,7 +16,7 @@
                 "packages" : ["tzdata", "git", "wget", "curl", "zip", "iputils-ping", "file", "less"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "at" : {
@@ -26,7 +26,7 @@
                 "packages" : ["at"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "dnsmasq" : {
@@ -36,7 +36,7 @@
                 "packages" : ["dnsmasq"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "faketime" : {
@@ -46,7 +46,7 @@
                 "packages" : ["faketime"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "gem" : {
@@ -56,7 +56,7 @@
                 "packages" : ["gem"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "golang" : {
@@ -66,7 +66,7 @@
                 "packages" : ["golang"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "htop" : {
@@ -76,7 +76,7 @@
                 "packages" : ["htop"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "jq" : {
@@ -86,7 +86,7 @@
                 "packages" : ["jq"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "mysql" : {
@@ -96,7 +96,7 @@
                 "packages" : ["mysql-client"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "nala" : {
@@ -114,7 +114,7 @@
                 }
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "netcat" : {
@@ -124,7 +124,7 @@
                 "packages" : ["netcat-openbsd"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "node" : {
@@ -140,13 +140,19 @@
                 "compression" : "zip",
                 "archive" : "nvm.zip",
                 "remove" : true
-            },
-            {
-                "type" : "run",
-                "file" : ""
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
+    },
+
+    "npm" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["npm"]
+            }
+        ],
+        "dependencies" : []
     },
 
     "openvpn" : {
@@ -156,7 +162,7 @@
                 "packages" : ["openvpn"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "php" : {
@@ -166,7 +172,7 @@
                 "packages" : ["php-cli", "php-curl", "php-json", "php-zip"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "pip3" : {
@@ -176,7 +182,7 @@
                 "packages" : ["python3-pip"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "thefuck" : {
@@ -186,7 +192,7 @@
                 "packages" : ["thefuck"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "vim" : {
@@ -196,7 +202,7 @@
                 "packages" : ["vim"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "wireguard" : {
@@ -206,7 +212,7 @@
                 "packages" : ["openvpn"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "xclip" : {
@@ -216,7 +222,7 @@
                 "packages" : ["xclip"]
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     },
 
     "zsh-in-docker" : {
@@ -233,6 +239,6 @@
                 "name" : "zsh-in-docker"
             }
         ],
-        "dependencie" : []
+        "dependencies" : []
     }
 }
