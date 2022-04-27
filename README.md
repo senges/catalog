@@ -92,10 +92,7 @@ Available `steps` types are described right after this section.
 
 Tools are installed under `/opt/toolname`.
 
-***
-
 ## Available `steps` types
-***
 ### apt
 
 ```json

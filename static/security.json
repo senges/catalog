@@ -224,7 +224,7 @@
                 "type" : "run",
                 "file" : "thc-hydra*/configure",
                 "cwd"  : "thc-hydra*",
-                "arguments" : [ "--prefix={{pwd}}" ]
+                "arguments" : [ "--prefix={{pwd}}", "--disable-xhydra" ]
             },
             {
                 "type" : "make",
