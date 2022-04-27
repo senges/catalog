@@ -95,6 +95,7 @@ Tools are installed under `/opt/toolname`.
 ***
 
 ## Available `steps` types
+***
 ### apt
 
 ```json
@@ -117,6 +118,7 @@ Custom apt source support :
 }
 ```
 
+***
 ### pip
 
 ```json
@@ -133,6 +135,7 @@ Custom apt source support :
 }
 ```
 
+***
 ### go
 
 ```json
@@ -142,6 +145,7 @@ Custom apt source support :
 }
 ```
 
+***
 ### wget
 
 ```json
@@ -161,6 +165,7 @@ Custom outfile :
 }
 ```
 
+***
 ### link
 
 Create a symlink to the tool in order to make it available in user $PATH.
@@ -182,6 +187,7 @@ It works globally !
 
 > `target` field supports glob expansion.
 
+***
 ### git
 
 Clone a git repository.
@@ -196,6 +202,7 @@ Clone a git repository.
 }
 ```
 
+***
 ### github release
 
 Will download a github release artifact archive. Keyword `{{latest}}` is available in order to follow dynamic archive naming based on version number.
@@ -226,6 +233,7 @@ You can also download release source code, either in `tar.gz` or `zip` archive. 
 }
 ```
 
+***
 ### run
 
 Run all kind of executable files.
@@ -263,9 +271,9 @@ If the stub cannot be executed globally with absolute path, optional `cwd` optio
 },
 ```
 
-> `file` field supports glob expansion.
-> `cwd` field supports glob expansion.
+> `file` and `cwd` fields support glob expansion.
 
+***
 ### extract
 
 Extract compressed archive.
@@ -288,6 +296,7 @@ Supported compressions are :
 
 > `archive` field supports glob expansion.
 
+***
 ### rm
 
 Remove junk local files to save some disk space. 
@@ -299,6 +308,7 @@ Remove junk local files to save some disk space.
 }
 ```
 
+***
 ### shell
 
 > This is not recommanded way of usging Catalog.
