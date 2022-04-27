@@ -39,6 +39,16 @@
         "dependencies" : []
     },
 
+    "curl" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["curl"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "dnsmasq" : {
         "steps" : [
             {

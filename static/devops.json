@@ -43,6 +43,24 @@
         "dependencies" : []
     },
 
+    "docker" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["ca-certificates", "gnupg", "lsb-release"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["docker-ce", "docker-ce-cli", "containerd.io", "docker-compose-plugin"],
+                "source" : {
+                    "repository" : "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable",
+                    "key" : "https://download.docker.com/linux/ubuntu/gpg"
+                }
+            }
+        ],
+        "dependencies" : []
+    },
+
     "docker-compose" : {
         "steps" : [
             {
