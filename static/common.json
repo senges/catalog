@@ -233,7 +233,7 @@
         "dependencies" : []
     },
 
-    "mysql" : {
+    "mysql-client" : {
         "steps" : [
             {
                 "type" : "apt",

@@ -185,6 +185,24 @@
         "dependencies" : []
     },
 
+    "helm" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-transport-https"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["helm"],
+                "source" : {
+                    "repository" : "deb https://baltocdn.com/helm/stable/debian/ all main",
+                    "key" : "https://baltocdn.com/helm/signing.asc"
+                }
+            }
+        ],
+        "dependencies" : []
+    },
+
     "influxdb" : {
         "steps" : [
             {
@@ -212,6 +230,23 @@
                     "repository" : "deb https://artifacts.elastic.co/packages/8.x/apt stable main",
                     "key" : "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
                 }
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "knative-client" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "knative/client",
+                "artifact" : "kn-linux-amd64",
+                "outfile" : "kn-linux-amd64"
+            },
+            {
+                "type" : "link",
+                "target" : "kn-linux-amd64",
+                "name" : "kn"
             }
         ],
         "dependencies" : []
