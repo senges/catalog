@@ -8,29 +8,28 @@ Catalog makes tool installation inside containers super easy, fast and clean.
 
 To work properly, Catalog needs `python3` and `python3-pip` packages installed.
 
-## Docker base image
-
-```Dockerfile
-FROM catalog:latest
-
-RUN catalog -v vim htop mysql
-```
-
 ## Basic usage
 
 ```text
 $  catalog --help
-usage: catalog.py [-h] [-i INFILE] [-l] [-f] [-v] [TOOL_NAME [TOOL_NAME ...]]
+usage: catalog.py [-h] [-i INFILE] [-a] [-l] [-f] [-v] [--debug] [--rm-cache] [--dry-run] [--dependencies {fail,ignore,satisfy}] [TOOL_NAME [TOOL_NAME ...]]
 
 positional arguments:
   TOOL_NAME
 
 optional arguments:
-  -h, --help                    show this help message and exit
-  -i INFILE, --infile INFILE    input tool list file
-  -l, --list                    list available tools and exit
-  -f, --force                   force tool reinstall if present
-  -v, --verbose                 verbose mode
+  -h, --help            show this help message and exit
+  -i INFILE, --infile INFILE
+                        input tool list file
+  -a, --available       list available tools and exit
+  -l, --list            list installed tools and exit
+  -f, --force           force tool reinstall if present
+  -v, --verbose         verbose mode
+  --debug               run catalog in debug mode
+  --rm-cache            removed any installation cache
+  --dry-run             run catalog in verbose but do not install anything
+  --dependencies {fail,ignore,satisfy}
+                        dependencies behavior
 
 ```
 
@@ -47,6 +46,21 @@ htop
 $  catalog -i tools.txt
 
 $  catalog vscodium vim kubectl dirsearch htop
+```
+
+## Features
+
+* extensible and customizable
+* glob pattern matching
+
+## Docker base image
+
+> Not yet available on docker hub. Need locat build (`docker build -t catalog:latest .`).
+
+```Dockerfile
+FROM catalog:latest
+
+RUN catalog -v vim htop mysql
 ```
 
 ## Create installation procedure
@@ -81,8 +95,7 @@ Tools are installed under `/opt/toolname`.
 ***
 
 ## Available `steps` types
-
-**# apt**
+### apt
 
 ```json
 {
@@ -104,7 +117,7 @@ Custom apt source support :
 }
 ```
 
-**# pip**
+### pip
 
 ```json
 {
@@ -120,7 +133,7 @@ Custom apt source support :
 }
 ```
 
-**# go**
+### go
 
 ```json
 {
@@ -129,7 +142,7 @@ Custom apt source support :
 }
 ```
 
-**# wget**
+### wget
 
 ```json
 {
@@ -148,7 +161,7 @@ Custom outfile :
 }
 ```
 
-**# link**
+### link
 
 Create a symlink to the tool in order to make it available in user $PATH.
 
@@ -169,7 +182,7 @@ It works globally !
 
 > `target` field supports glob expansion.
 
-**# git**
+### git
 
 Clone a git repository.
 
@@ -183,7 +196,7 @@ Clone a git repository.
 }
 ```
 
-**# github release**
+### github release
 
 Will download a github release artifact archive. Keyword `{{latest}}` is available in order to follow dynamic archive naming based on version number.
 
@@ -213,7 +226,7 @@ You can also download release source code, either in `tar.gz` or `zip` archive. 
 }
 ```
 
-**# run**
+### run
 
 Run all kind of executable files.
 
@@ -224,15 +237,36 @@ Run all kind of executable files.
 }
 ```
 
+Add arguments (`{{pwd}}` keyword will feed current context path).
+
+```json
+{
+    "type" : "run",
+    "file" : "configure.sh",
+    "args" : [ "--prefix={{pwd}}" ]
+}
+```
+
 This is the equivalent of :
 
 ```text
 $  ./configure.sh
 ```
 
-> `file` field supports glob expansion.
+If the stub cannot be executed globally with absolute path, optional `cwd` options allows to set a directory for execution.
 
-**# extract**
+```json
+{
+    "type" : "run",
+    "file" : "mytool_v1-*/configure",
+    "cwd"  : "mytool_v1-*"
+},
+```
+
+> `file` field supports glob expansion.
+> `cwd` field supports glob expansion.
+
+### extract
 
 Extract compressed archive.
 
@@ -254,7 +288,7 @@ Supported compressions are :
 
 > `archive` field supports glob expansion.
 
-**# rm**
+### rm
 
 Remove junk local files to save some disk space. 
 
@@ -265,7 +299,7 @@ Remove junk local files to save some disk space.
 }
 ```
 
-**# shell**
+### shell
 
 > This is not recommanded way of usging Catalog.
 > Please make sure to use it with caution.

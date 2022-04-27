@@ -202,6 +202,48 @@
         ]
     },
 
+    "hydra" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["libssl-dev", "libssh-dev", "libidn11-dev", "libpcre3-dev", "libgtk2.0-dev", "libmysqlclient-dev", "libpq-dev", "libsvn-dev", "firebird-dev", "libmemcached-dev", "libgpg-error-dev", "libgcrypt20-dev"]
+            },
+            {
+                "type" : "github_release",
+                "repository" : "vanhauser-thc/thc-hydra",
+                "artifact" : "zip@{{latest}}",
+                "outfile" : "hydra.zip"
+            },
+            {
+                "type" : "extract",
+                "compression" : "zip",
+                "archive" : "hydra.zip",
+                "remove" : true
+            },
+            {
+                "type" : "run",
+                "file" : "thc-hydra*/configure",
+                "cwd"  : "thc-hydra*",
+                "arguments" : [ "--prefix={{pwd}}" ]
+            },
+            {
+                "type" : "make",
+                "path" : "thc-hydra*"
+            },
+            {
+                "type" : "make",
+                "path" : "thc-hydra*",
+                "arguments" : [ "install" ]
+            },
+            {
+                "type" : "link",
+                "target" : "bin/hydra",
+                "name" : "hydra"
+            }
+        ],
+        "dependencies" : [ "make", "gcc" ]
+    },
+
     "john" : {
         "steps" : [
             {
