@@ -63,6 +63,7 @@ class Installer:
         self.config = config.get(tool)
         self.config_map = config
         self.tool = tool
+        self.builtins = builtins()
 
         self.mkpath = lambda x: os.path.join(self.wd, x)
         self.expand = lambda x: x if Config.DRY_RUN else glob(x)[0]
@@ -83,10 +84,14 @@ class Installer:
             'github_release' : self._github_release
         }
 
-    def install(self):
+    @classmethod
+    def is_installed(cls, name):
+        path = os.path.join('/opt/.catalog/tools', name)
+        return os.path.exists(path)
 
+    def install(self):
         # Tool is already installed
-        if self._installed():
+        if self.is_installed(self.tool):
             if Config.FORCE and not Config.DRY_RUN:
                 shutil.rmtree( self.wd )
             else:
@@ -129,13 +134,13 @@ class Installer:
             with open(trace, 'w+') as f:
                 f.write( str(datetime.datetime.now()) )
 
-    def _installed(self):
-        path = os.path.join('/opt/.catalog/tools', self.tool)
-        return os.path.exists(path)
-
     # Check that dependency is satisfied
     def _dependency(self, name: str):
-        if self._installed(): return
+        if name in self.builtins: 
+            return
+
+        if self.is_installed(name): 
+            return
 
         if Config.satisfy_dependencies():
             verbose('\n------ Installing dependency %s ------' % name)
@@ -409,6 +414,22 @@ def untar(archive: str, target: str) -> [str]:
 def untargz(archive: str, target: str) -> [str]:
     return ['tar', '-vzxf', archive, '-C', target]
 
+# List builtins tools available in $PATH
+def builtins() -> [str]:
+    envpath = os.environ.get('PATH', [])
+    envpath = envpath.split(':')
+    builtins = []
+
+    for path in envpath:
+        builtins += ls(path)
+    
+    return builtins
+
+# List (only) files in one folder
+def ls(folder: str) -> [str]:
+    _, _, files = next(os.walk(folder), (None, None, []))
+    return files
+
 def verbose(msg: str):
     if Config.VERBOSE:
         print(msg)
@@ -464,9 +485,7 @@ def main():
 
     # List installed tools and exit
     if args.list:
-        _, tools, _ = next(os.walk('/opt'))
-        if 'bin' in tools:
-            tools.remove('bin')
+        tools = ls('/opt/.catalog/tools')
         print( '\n'.join(sorted( tools, key = str.casefold )))
         exit(0)
 

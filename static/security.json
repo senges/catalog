@@ -547,5 +547,15 @@
     "wpscan" : {
         "steps" : [],
         "dependencies" : []
+    },
+    
+    "zsteg" : {
+        "steps" : [
+            {
+                "type" : "gem",
+                "packages" : ["zsteg"]
+            }
+        ],
+        "dependencies" : []
     }
 }

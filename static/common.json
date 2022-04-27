@@ -19,6 +19,16 @@
         "dependencies" : []
     },
 
+    "apache" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apache2"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "at" : {
         "steps" : [
             {
@@ -39,11 +49,41 @@
         "dependencies" : []
     },
 
+    "fail2ban" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["fail2ban"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "faketime" : {
         "steps" : [
             {
                 "type" : "apt",
                 "packages" : ["faketime"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "firewalld" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["firewalld"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "ftp" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["ftp"]
             }
         ],
         "dependencies" : []
@@ -89,6 +129,52 @@
         "dependencies" : []
     },
 
+    "iftop" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["iftop"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "java" : {
+        "steps" : [
+            {
+                "type" : "wget",
+                "url" : "https://download.java.net/java/GA/jdk18.0.1/3f48cabb83014f9fab465e280ccf630b/10/GPL/openjdk-18.0.1_linux-x64_bin.tar.gz"
+            },
+            {
+                "type" : "extract",
+                "archive" : "openjdk-18.0.1_linux-x64_bin.tar.gz",
+                "compression" : "targz",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "jdk-18.*/bin/java",
+                "name" : "java18"
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "java18" : {
+        "steps" : [],
+        "dependencies" : [ "java" ]
+    },
+
+    "java8" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["openjdk-8-jre"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "jq" : {
         "steps" : [
             {
@@ -104,6 +190,34 @@
             {
                 "type" : "apt",
                 "packages" : ["make"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "mongodb" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : [""]
+            },
+            {
+                "type" : "apt",
+                "packages" : [""],
+                "source" : {
+                    "repository" : "",
+                    "key" : "https://www.mongodb.org/static/pgp/server-5.0.asc"
+                }
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "monitorix" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["monitorix"]
             }
         ],
         "dependencies" : []
@@ -142,6 +256,16 @@
             {
                 "type" : "apt",
                 "packages" : ["netcat-openbsd"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "nginx" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["nginx"]
             }
         ],
         "dependencies" : []
@@ -200,6 +324,46 @@
             {
                 "type" : "apt",
                 "packages" : ["python3-pip"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "postgresql" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["postgresql"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "redis-server" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["redis-server"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "snort" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["oinkmaster", "snort", "snort-rules-default"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "suricata" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["suricata"]
             }
         ],
         "dependencies" : []

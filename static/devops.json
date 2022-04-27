@@ -83,11 +83,39 @@
         "dependencies" : []
     },
 
+    "elasticsearch" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-transport-https"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["elasticsearch"],
+                "source" : {
+                    "repository" : "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main",
+                    "key" : "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+                }
+            }
+        ],
+        "dependencies" : []
+    },
+
     "filezilla" : {
         "steps" : [
             {
                 "type" : "apt",
                 "packages" : ["filezilla"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "fluentd" : {
+        "steps" : [
+            {
+                "type" : "gem",
+                "packages" : ["fluentd"]
             }
         ],
         "dependencies" : []
@@ -103,6 +131,24 @@
         "dependencies" : []
     },
 
+    "grafana" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-transport-https", "software-properties-common"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["grafana"],
+                "source" : {
+                    "repository" : "https://packages.grafana.com/oss/deb stable main",
+                    "key" : "https://packages.grafana.com/gpg.key"
+                }
+            }
+        ],
+        "dependencies" : [ "wget" ]
+    },
+
     "gcloud-cli" : {
         "steps" : [
             {
@@ -115,6 +161,38 @@
                 "source" : {
                     "repository" : "deb https://packages.cloud.google.com/apt cloud-sdk main",
                     "key" : "https://packages.cloud.google.com/apt/doc/apt-key.gpg"
+                }
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "influxdb" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["influxdb"],
+                "source" : {
+                    "repository" : "deb [signed-by=/etc/apt/trusted.gpg.d/influxdb.gpg] https://repos.influxdata.com/ubuntu focal stable",
+                    "key" : "https://repos.influxdata.com/influxdb.key"
+                }
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "kibana" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-transport-https"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["kibana"],
+                "source" : {
+                    "repository" : "deb https://artifacts.elastic.co/packages/8.x/apt stable main",
+                    "key" : "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
                 }
             }
         ],
@@ -149,6 +227,47 @@
         "dependencies" : []
     },
 
+    "logstash" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-transport-https"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["logstash"],
+                "source" : {
+                    "repository" : "deb https://artifacts.elastic.co/packages/8.x/apt stable main",
+                    "key" : "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+                }
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "loki" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "grafana/loki",
+                "artifact" : "loki-linux-amd64.zip",
+                "outfile" : "loki-linux-amd64.zip"
+            },
+            {
+                "type" : "extract",
+                "archive" : "loki-linux-amd64.zip",
+                "compression" : "zip",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "loki-linux-amd64",
+                "name" : "loki"
+            }
+        ],
+        "dependencies" : []
+    },
+
     "maven" : {
         "steps" : [
             {
@@ -169,6 +288,29 @@
                 "type" : "link",
                 "target" : "minikube-linux-amd64",
                 "name" : "minikube"
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "prometheus" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "prometheus/prometheus",
+                "artifact" : "prometheus-{{latest}}.linux-amd64.tar.gz",
+                "outfile" : "prometheus-linux-amd64.tar.gz"
+            },
+            {
+                "type" : "extract",
+                "archive" : "prometheus-linux-amd64.tar.gz",
+                "compression" : "targz",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "prometheus-*/prometheus",
+                "name" : "prometheus"
             }
         ],
         "dependencies" : []
@@ -204,6 +346,38 @@
             }
         ],
         "dependencies" : []
+    },
+
+    "telegraf" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["telegraf"],
+                "source" : {
+                    "repository" : "deb https://repos.influxdata.com/ubuntu focal stable",
+                    "key" : "https://repos.influxdata.com/influxdb.key"
+                }
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "terraform" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["gnupg", "software-properties-common"]
+            },
+            {
+                "type" : "apt",
+                "packages" : ["terraform"],
+                "source" : {
+                    "repository" : "deb [arch=amd64] https://apt.releases.hashicorp.com focal main",
+                    "key" : "https://apt.releases.hashicorp.com/gpg"
+                }
+            }
+        ],
+        "dependencies" : [ "curl" ]
     },
 
     "vagrant" : {
