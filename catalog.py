@@ -7,6 +7,7 @@
 # =============================================================================
 
 import os
+import re
 import sys
 import json
 import shutil
@@ -57,10 +58,10 @@ class CommandSet:
         self.commands += cmdset.commands
 
 class Installer:
-    def __init__(self, config: dict, tool: str):
+    def __init__(self, tool: str, config: dict = {}):
 
         self.wd = '/opt/%s' % tool
-        self.config = config.get(tool)
+        self.config = config.get(tool, {})
         self.config_map = config
         self.tool = tool
         self.builtins = builtins()
@@ -88,6 +89,25 @@ class Installer:
     def is_installed(cls, name):
         path = os.path.join('/opt/.catalog/tools', name)
         return os.path.exists(path)
+
+    def init(self):
+        try:
+            Path( '/opt/.catalog/bin' ).mkdir(exist_ok = True, parents = True)
+            Path( '/opt/.catalog/tools' ).mkdir(exist_ok = True, parents = True)
+            Path( self.wd ).mkdir(exist_ok = True, parents = True)
+        except PermissionError:
+            print('[!] Got permission denied on \'/opt\' folder.')
+            exit(1)
+
+        link = self._link({
+            'name' : 'catalog',
+            'target' : os.path.join(self.wd, 'catalog.py')
+        })
+
+        for cmd in link.commands:
+            verbose( str(cmd) )
+            shell_run( cmd )
+            verbose('=> Ok')
 
     def install(self):
         # Tool is already installed
@@ -144,7 +164,7 @@ class Installer:
 
         if Config.satisfy_dependencies():
             verbose('\n------ Installing dependency %s ------' % name)
-            Installer(self.config_map, name).install()
+            Installer(name, self.config_map).install()
             verbose('\n------ ENDOF - %s ------' % name)
             return
 
@@ -204,22 +224,27 @@ class Installer:
         return cmdset
 
     def _pip(self, step: dict) -> CommandSet:
+        self._dependency("pip3")
 
         if pkg := step.get('packages'):
-            return [['pip', 'install'] + pkg]
+            cmd = ['pip3', 'install'] + pkg
+            return CommandSet(cmd)
             
         requirements = step.get('file')
         requirements = self.mkpath(requirements)
-        cmd = ['pip', 'install', '-r', requirements]
+        cmd = ['pip3', 'install', '-r', requirements]
 
         return CommandSet(cmd)
 
     def _go(self, step: dict) -> CommandSet:
+        self._dependency("golang")
         package = step.get('package')
 
         return CommandSet(['go', 'install', '-v', package])
 
     def _npm(self, step: dict) -> CommandSet:
+        self._dependency("npm")
+
         packages = step.get('packages')
         cmdset = CommandSet()
 
@@ -235,6 +260,8 @@ class Installer:
         return cmdset
 
     def _wget(self, step: dict) -> CommandSet:
+        self._dependency("wget")
+
         url = step.get('url')
         outfile = step.get('outfile')
 
@@ -257,11 +284,13 @@ class Installer:
 
         cmdset = CommandSet()
         cmdset.add([ 'chmod', '+x', target ])
-        cmdset.add([ 'ln', '-fs', target, f'/opt/bin/{name}' ])
+        cmdset.add([ 'ln', '-fs', target, f'/opt/.catalog/bin/{name}' ])
 
         return cmdset
 
     def _make(self, step: dict) -> CommandSet:
+        self._dependency("make")
+
         arguments = step.get('arguments')
         path = step.get('path')
 
@@ -286,6 +315,8 @@ class Installer:
         return CommandSet([ 'rm', '-rf', path ])
 
     def _git(self, step: dict) -> CommandSet:
+        self._dependency("git")
+        
         repo = step.get('repository')
         clean = step.get('clean')
 
@@ -303,6 +334,9 @@ class Installer:
         return cmdset
 
     def _github_release(self, step: dict) -> CommandSet:
+        self._dependency("git")
+        self._dependency("wget")
+
         repo     = step.get('repository') 
         artifact = step.get('artifact') 
         outfile  = step.get('outfile')
@@ -314,7 +348,9 @@ class Installer:
             request  = Request('%s/releases' % api)
             response = urlopen( request )
             data     = json.load(response)
-            latest   = data[0]['tag_name'][1:]
+            tag      = data[0]['tag_name']
+            # Probably not super good (see knative)
+            latest   = re.sub('[^\d\.]', '', tag)
         except:
             print('[!] Could not properly load url %s/releases' % api)
             exit(1)
@@ -329,7 +365,7 @@ class Installer:
             form, version = artifact.split('@')
             url = '%s/archive/refs/tags/v%s.%s' % (url, version, form)
         else:
-            url = '%s/releases/download/v%s/%s' %  (repo, latest, artifact)
+            url = '%s/releases/download/%s/%s' %  (url, tag, artifact)
 
         cmd = [ 'wget', url, '-O', self.mkpath(outfile) ]
         cmd.append('--retry-connrefused')
@@ -360,7 +396,7 @@ class Installer:
         return step.get('cmd')
 
     def _extract(self, step: dict) -> CommandSet:
-
+        
         compression = step.get('compression')
         remove      = step.get('remove')
         archive     = step.get('archive')
@@ -373,6 +409,7 @@ class Installer:
         elif compression == 'targz':
             cmdset.add( untargz(archive, self.wd) )
         elif compression == 'zip':
+            self._dependency("zip")
             cmdset.add( unzip(archive, self.wd) )
         else:
             raise KeyError()
@@ -446,6 +483,7 @@ def main():
     parser.add_argument('-l', '--list', help = 'list installed tools and exit', action = 'store_true')
     parser.add_argument('-f', '--force', help = 'force tool reinstall if present', action = 'store_true')
     parser.add_argument('-v', '--verbose', help = 'verbose mode', action = 'store_true')
+    parser.add_argument('--init', help = 'setup catalog basic requirements', action = 'store_true')
     parser.add_argument('--debug', help = 'run catalog in debug mode', action = 'store_true')
     # parser.add_argument('-d', '--dind', help = 'use docker in docker provided installers (pip, go, npm..)', action = 'store_true')
     parser.add_argument('--rm-cache', help = 'removed any installation cache', action = 'store_true')
@@ -462,20 +500,28 @@ def main():
     Config.DRY_RUN = args.dry_run
     Config.DEPENDENCIES = args.dependencies
 
-    # Dry run infer verbose mode
-    if Config.DRY_RUN: Config.VERBOSE = True
+    # Dry run infer verbose mode and dependency ignore
+    if Config.DRY_RUN: 
+        Config.VERBOSE = True
+        Config.DEPENDENCIES = 'ignore'
+
+    # If catalog init
+    if args.init:
+        Installer('catalog').init()
+        exit(0)
 
     config_map = dict()
     tool_list = args.tools
 
+    # Load config files
     try:
-        # Load config files
         for cf in CONFIG_FILES:
             with open(cf, 'rb') as f:
                 config = json.load(f)
                 config_map = { **config_map, **config }
     except:
         raise Exception('Error loading config files')
+        
 
     # List available installs and exit
     if args.available:
@@ -497,10 +543,10 @@ def main():
                     tool_list.append(tool)
         except:
             raise Exception('Error loading tool list')
-    
+
     # Make sure installation folders are ready
     try:
-        Path( '/opt/bin' ).mkdir(exist_ok = True, parents = True)
+        Path( '/opt/.catalog/bin' ).mkdir(exist_ok = True, parents = True)
         Path( '/opt/.catalog/tools' ).mkdir(exist_ok = True, parents = True)
     except PermissionError:
         print('[!] Got permission denied on \'/opt\' folder.')
@@ -508,7 +554,7 @@ def main():
 
     # Foreach tool, follow install procedure
     for tool in tool_list:
-        Installer( config_map, tool ).install()
+        Installer( tool, config_map ).install()
 
     # Remove cache (to be improved)
     if args.rm_cache:

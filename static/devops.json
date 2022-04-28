@@ -53,7 +53,7 @@
                 "type" : "apt",
                 "packages" : ["docker-ce", "docker-ce-cli", "containerd.io", "docker-compose-plugin"],
                 "source" : {
-                    "repository" : "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable",
+                    "repository" : "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable",
                     "key" : "https://download.docker.com/linux/ubuntu/gpg"
                 }
             }
@@ -273,8 +273,44 @@
     "kubectx" : {
         "steps" : [
             {
-                "type" : "apt",
-                "packages" : ["kubectx"]
+                "type" : "github_release",
+                "repository" : "ahmetb/kubectx",
+                "artifact" : "kubectx_v{{latest}}_linux_x86_64.tar.gz",
+                "outfile" : "kubectx.tar.gz"
+            },
+            {
+                "type" : "extract",
+                "compression" : "targz",
+                "archive" : "kubectx.tar.gz",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "kubectx",
+                "name" : "kubectx"
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "kubens" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "ahmetb/kubectx",
+                "artifact" : "kubens_v{{latest}}_linux_x86_64.tar.gz",
+                "outfile" : "kubens.tar.gz"
+            },
+            {
+                "type" : "extract",
+                "compression" : "targz",
+                "archive" : "kubens.tar.gz",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "kubens",
+                "name" : "kubens"
             }
         ],
         "dependencies" : []

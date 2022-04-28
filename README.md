@@ -6,7 +6,7 @@ Catalog makes tool installation inside containers super easy, fast and clean.
 
 ## Requirements
 
-To work properly, Catalog needs `python3` and `python3-pip` packages installed.
+To work properly, Catalog needs `python3` installed.
 
 ## Basic usage
 
@@ -53,14 +53,28 @@ $  catalog vscodium vim kubectl dirsearch htop
 * extensible and customizable
 * glob pattern matching
 
-## Docker base image
+## Docker
 
 > Not yet available on docker hub. Need locat build (`docker build -t catalog:latest .`).
 
-```Dockerfile
-FROM catalog:latest
+Catalog image is based on `ubuntu:20.04` and can be used as a base image for your containers (Compressed size `~38MB`).
 
-RUN catalog -v vim htop mysql
+```Dockerfile
+FROM senges/catalog:latest
+
+RUN catalog -v --rm-cache vim htop mysql-client
+```
+
+You can also install catalog yourself using `install.sh` script.
+
+```Dockerfile
+FROM ubuntu:20.04 
+# [...]
+
+# Using wget
+RUN sh -c "$(wget -qO- https://raw.githubusercontent.com/senges/catalog/main/utils/install.sh)"
+# Using curl
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/senges/catalog/main/utils/install.sh)"
 ```
 
 ## Create installation procedure

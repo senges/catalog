@@ -3,20 +3,20 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "vim", "iputils-ping", "netcat", "dnsutils", "tree", "file", "less", "nano", "ssh-client", "lsof"]
+                "packages" : ["tzdata", "file", "less", "lsof", "gnupg"]
             }
         ],
-        "dependencies" : []
+        "dependencies" : [ "git", "curl", "wget", "zip", "ping", "vim", "netcat", "tree", "ssh", "dnsutils" ]
     },
 
     "utils.min" : {
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "git", "wget", "curl", "zip", "unzip", "iputils-ping", "file", "less"]
+                "packages" : ["tzdata", "less", "gnupg"]
             }
         ],
-        "dependencies" : []
+        "dependencies" : [ "wget", "curl", "zip", "ping" ]
     },
 
     "apache" : {
@@ -54,6 +54,16 @@
             {
                 "type" : "apt",
                 "packages" : ["dnsmasq"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "dnsutils" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["dnsutils"]
             }
         ],
         "dependencies" : []
@@ -114,6 +124,16 @@
             {
                 "type" : "apt",
                 "packages" : ["gem"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "git" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["git"]
             }
         ],
         "dependencies" : []
@@ -251,11 +271,21 @@
             },
             {
                 "type" : "apt",
-                "packages" : ["nala"],
+                "packages" : ["nala-legacy"],
                 "source" : {
                     "repository" : "deb http://deb.volian.org/volian/ scar main",
                     "key" : "https://deb.volian.org/volian/scar.key"
                 }
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "nano" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["nano"]
             }
         ],
         "dependencies" : []
@@ -329,6 +359,16 @@
         "dependencies" : []
     },
 
+    "ping" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["iputils-ping"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "pip3" : {
         "steps" : [
             {
@@ -369,6 +409,26 @@
         "dependencies" : []
     },
 
+    "ssh" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["ssh-client"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "ssh-server" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["openssh-server"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "suricata" : {
         "steps" : [
             {
@@ -389,11 +449,31 @@
         "dependencies" : []
     },
 
+    "tree" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["tree"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "vim" : {
         "steps" : [
             {
                 "type" : "apt",
                 "packages" : ["vim"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "wget" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["wget"]
             }
         ],
         "dependencies" : []
@@ -414,6 +494,16 @@
             {
                 "type" : "apt",
                 "packages" : ["xclip"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "zip" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["zip", "unzip"]
             }
         ],
         "dependencies" : []
