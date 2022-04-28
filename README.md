@@ -50,8 +50,6 @@ $  catalog ping terraform java postgresql redis-server
 
 ## Docker
 
-> Not yet available on docker hub. Need locat build (`docker build -t catalog:latest .`).
-
 Catalog image is based on `ubuntu:20.04` and can be used as a base image for your containers (Compressed size `~38MB`).
 
 ```Dockerfile
