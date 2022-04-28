@@ -27,6 +27,7 @@ class Config:
     FORCE = False
     DRY_RUN = False
     DEPENDENCIES = 'fail'
+    CACHE = False
 
     @classmethod
     def ignore_dependencies(cls):
@@ -183,6 +184,7 @@ class Installer:
         if source := step.get('source'):
             repo = source.get('repository')
             key = source.get('key')
+            sources = []
 
             # Download pgp key
             cmdset.update(
@@ -203,8 +205,6 @@ class Installer:
                 })
             )
 
-            sources = []
-
             # Load installed source list
             try:
                 with open('/etc/apt/sources.list.d/catalog.list', 'r') as f:
@@ -218,7 +218,10 @@ class Installer:
                 with open('/etc/apt/sources.list.d/catalog.list', 'a') as f:
                     f.write(repo + '\n')
 
-        cmdset.add( ['apt', 'update'] )
+        if cmdset.commands or not Config.CACHE:
+            cmdset.add( ['apt', 'update'] )
+            Config.CACHE = True
+
         cmdset.add( ['apt', 'install', '-y', '--no-install-recommends'] + pkg )
 
         return cmdset
@@ -488,7 +491,7 @@ def main():
     # parser.add_argument('-d', '--dind', help = 'use docker in docker provided installers (pip, go, npm..)', action = 'store_true')
     parser.add_argument('--rm-cache', help = 'removed any installation cache', action = 'store_true')
     parser.add_argument('--dry-run', help = 'run catalog in verbose but do not install anything', action = 'store_true')
-    parser.add_argument('--dependencies', help = 'dependencies behavior', default = 'fail', choices = ['fail', 'ignore', 'satisfy'])
+    parser.add_argument('--dependencies', help = 'dependencies behavior', default = 'satisfy', choices = ['fail', 'ignore', 'satisfy'])
     # parser.add_argument('--keep-installers', help = 'keep any installer', action = 'store_true')
     parser.add_argument('tools', metavar = 'TOOL_NAME', nargs = '*')
 
