@@ -37,21 +37,16 @@ Feed catalog with a list of tools to install :
 
 ```bash
 $  cat tools.txt
-vscodium
-vim
-kubectl
-dirsearch
-htop
+ping
+terraform
+java
+postgresql
+redis-server
 
 $  catalog -i tools.txt
 
-$  catalog vscodium vim kubectl dirsearch htop
+$  catalog ping terraform java postgresql redis-server
 ```
-
-## Features
-
-* extensible and customizable
-* glob pattern matching
 
 ## Docker
 
