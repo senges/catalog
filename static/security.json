@@ -254,6 +254,16 @@
         "dependencies" : []
     },
 
+    "jwt-cracker" : {
+        "steps" : [
+            {
+                "type" : "npm",
+                "packages" : [ "jwt-cracker" ]
+            }
+        ],
+        "dependencies" : [ "curl", "jq" ]
+    },
+
     "ltrace" : {
         "steps" : [
             {
