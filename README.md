@@ -2,17 +2,18 @@
 
 Catalog makes tool installation inside containers super easy, fast and clean.
 
-> Catalog is still under development and does only support apt based distributions for now. Feel free to improve.
+> Catalog is built for apt based distributions. 
+> Feel free to improve !
 
 ## Requirements
 
-To work properly, Catalog needs `python3` installed.
+Catalog requires `python3` installed.
 
 ## Basic usage
 
 ```text
 $  catalog --help
-usage: catalog.py [-h] [-i INFILE] [-a] [-l] [-f] [-v] [--debug] [--rm-cache] [--dry-run] [--dependencies {fail,ignore,satisfy}] [TOOL_NAME [TOOL_NAME ...]]
+usage: catalog.py [-h] [-i INFILE] [-a] [-l] [-f] [-v] [--init] [--debug] [--preserve-cache] [--dry-run] [--dependencies {fail,ignore,satisfy}] [TOOL_NAME [TOOL_NAME ...]]
 
 positional arguments:
   TOOL_NAME
@@ -25,12 +26,12 @@ optional arguments:
   -l, --list            list installed tools and exit
   -f, --force           force tool reinstall if present
   -v, --verbose         verbose mode
+  --init                setup catalog basic requirements
   --debug               run catalog in debug mode
-  --rm-cache            removed any installation cache
+  --preserve-cache      do not clear any installation cache
   --dry-run             run catalog in verbose but do not install anything
   --dependencies {fail,ignore,satisfy}
                         dependencies behavior
-
 ```
 
 Feed catalog with a list of tools to install :
@@ -50,12 +51,12 @@ $  catalog ping terraform java postgresql redis-server
 
 ## Docker
 
-Catalog image is based on `ubuntu:20.04` and can be used as a base image for your containers (Compressed size `~38MB`).
+Catalog image is based on `ubuntu:20.04` and can be used as a base image for your containers (compressed size `~38MB`).
 
 ```Dockerfile
 FROM senges/catalog:latest
 
-RUN catalog -v --rm-cache vim htop mysql-client
+RUN catalog -v vim htop mysql-client
 ```
 
 You can also install catalog yourself using `install.sh` script.

@@ -489,7 +489,7 @@ def main():
     parser.add_argument('--init', help = 'setup catalog basic requirements', action = 'store_true')
     parser.add_argument('--debug', help = 'run catalog in debug mode', action = 'store_true')
     # parser.add_argument('-d', '--dind', help = 'use docker in docker provided installers (pip, go, npm..)', action = 'store_true')
-    parser.add_argument('--rm-cache', help = 'removed any installation cache', action = 'store_true')
+    parser.add_argument('--preserve-cache', help = 'do not clear any installation cache', action = 'store_true')
     parser.add_argument('--dry-run', help = 'run catalog in verbose but do not install anything', action = 'store_true')
     parser.add_argument('--dependencies', help = 'dependencies behavior', default = 'satisfy', choices = ['fail', 'ignore', 'satisfy'])
     # parser.add_argument('--keep-installers', help = 'keep any installer', action = 'store_true')
@@ -560,7 +560,7 @@ def main():
         Installer( tool, config_map ).install()
 
     # Remove cache (to be improved)
-    if args.rm_cache:
+    if not args.preserve_cache:
         print('\n[i] Removing cached data...')
         shutil.rmtree( '/var/lib/apt/lists/' )
         os.mkdir( '/var/lib/apt/lists/' )
