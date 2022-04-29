@@ -75,6 +75,7 @@ class Installer:
             'pip'   : self._pip,
             'npm'   : self._npm,
             'go'    : self._go,
+            'gem'    : self._gem,
             'wget'  : self._wget,
             'link'  : self._link,
             'rm'    : self._rm,
@@ -227,12 +228,12 @@ class Installer:
         return cmdset
 
     def _pip(self, step: dict) -> CommandSet:
-        self._dependency("pip3")
+        self._dependency('pip3')
 
         if pkg := step.get('packages'):
             cmd = ['pip3', 'install'] + pkg
             return CommandSet(cmd)
-            
+
         requirements = step.get('file')
         requirements = self.mkpath(requirements)
         cmd = ['pip3', 'install', '-r', requirements]
@@ -245,8 +246,15 @@ class Installer:
 
         return CommandSet(['go', 'install', '-v', package])
 
+    def _gem(self, step: dict) -> CommandSet:
+        self._dependency('gem')
+        pkg = step.get('packages')
+        cmd = ['gem', 'install'] + pkg
+
+        return CommandSet(cmd)
+
     def _npm(self, step: dict) -> CommandSet:
-        self._dependency("npm")
+        self._dependency('npm')
 
         packages = step.get('packages')
         cmdset = CommandSet()
@@ -263,7 +271,7 @@ class Installer:
         return cmdset
 
     def _wget(self, step: dict) -> CommandSet:
-        self._dependency("wget")
+        self._dependency('wget')
 
         url = step.get('url')
         outfile = step.get('outfile')
@@ -292,7 +300,7 @@ class Installer:
         return cmdset
 
     def _make(self, step: dict) -> CommandSet:
-        self._dependency("make")
+        self._dependency('make')
 
         arguments = step.get('arguments')
         path = step.get('path')
@@ -318,7 +326,7 @@ class Installer:
         return CommandSet([ 'rm', '-rf', path ])
 
     def _git(self, step: dict) -> CommandSet:
-        self._dependency("git")
+        self._dependency('git')
         
         repo = step.get('repository')
         clean = step.get('clean')
@@ -337,8 +345,8 @@ class Installer:
         return cmdset
 
     def _github_release(self, step: dict) -> CommandSet:
-        self._dependency("git")
-        self._dependency("wget")
+        self._dependency('git')
+        self._dependency('wget')
 
         repo     = step.get('repository') 
         artifact = step.get('artifact') 
@@ -412,7 +420,7 @@ class Installer:
         elif compression == 'targz':
             cmdset.add( untargz(archive, self.wd) )
         elif compression == 'zip':
-            self._dependency("zip")
+            self._dependency('zip')
             cmdset.add( unzip(archive, self.wd) )
         else:
             raise KeyError()

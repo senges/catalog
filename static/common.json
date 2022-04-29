@@ -120,13 +120,8 @@
     },
 
     "gem" : {
-        "steps" : [
-            {
-                "type" : "apt",
-                "packages" : ["gem"]
-            }
-        ],
-        "dependencies" : []
+        "steps" : [],
+        "dependencies" : ["ruby"]
     },
 
     "git" : {
@@ -394,6 +389,16 @@
             {
                 "type" : "apt",
                 "packages" : ["redis-server"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "ruby" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["ruby"]
             }
         ],
         "dependencies" : []
