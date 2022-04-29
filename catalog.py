@@ -71,20 +71,21 @@ class Installer:
         self.expand = lambda x: x if Config.DRY_RUN else glob(x)[0]
 
         self.functions_mapper = {
-            'apt'   : self._apt,
-            'pip'   : self._pip,
-            'npm'   : self._npm,
-            'go'    : self._go,
-            'gem'    : self._gem,
-            'wget'  : self._wget,
-            'link'  : self._link,
-            'rm'    : self._rm,
-            'run'   : self._run,
-            'make'   : self._make,
-            'git'   : self._git,
-            'shell' : self._shell,
-            'extract' : self._extract,
-            'github_release' : self._github_release
+            'apt'            : self._apt,
+            'cargo'          : self._cargo,
+            'extract'        : self._extract,
+            'gem'            : self._gem,
+            'git'            : self._git,
+            'github_release' : self._github_release,
+            'go'             : self._go,
+            'link'           : self._link,
+            'make'           : self._make,
+            'npm'            : self._npm,
+            'pip'            : self._pip,
+            'rm'             : self._rm,
+            'run'            : self._run,
+            'shell'          : self._shell,
+            'wget'           : self._wget,
         }
 
     @classmethod
@@ -94,8 +95,6 @@ class Installer:
 
     def init(self):
         try:
-            Path( '/opt/.catalog/bin' ).mkdir(exist_ok = True, parents = True)
-            Path( '/opt/.catalog/tools' ).mkdir(exist_ok = True, parents = True)
             Path( self.wd ).mkdir(exist_ok = True, parents = True)
         except PermissionError:
             print('[!] Got permission denied on \'/opt\' folder.')
@@ -220,31 +219,43 @@ class Installer:
                     f.write(repo + '\n')
 
         if cmdset.commands or not Config.CACHE:
-            cmdset.add( ['apt', 'update'] )
+            cmdset.add(['apt', 'update'])
             Config.CACHE = True
 
-        cmdset.add( ['apt', 'install', '-y', '--no-install-recommends'] + pkg )
+        cmdset.add(['apt', 'install', '-y', '--no-install-recommends'] + pkg)
 
         return cmdset
 
-    def _pip(self, step: dict) -> CommandSet:
-        self._dependency('pip3')
-
-        if pkg := step.get('packages'):
-            cmd = ['pip3', 'install'] + pkg
-            return CommandSet(cmd)
-
-        requirements = step.get('file')
-        requirements = self.mkpath(requirements)
-        cmd = ['pip3', 'install', '-r', requirements]
+    # Better chose target dir (--target-dir)
+    def _cargo(self, step: dict) -> CommandSet:
+        self._dependency('cargo')
+        pkg = step.get('packages')
+        cmd = ['cargo', 'install', '--locked'] + pkg
 
         return CommandSet(cmd)
 
-    def _go(self, step: dict) -> CommandSet:
-        self._dependency("golang")
-        package = step.get('package')
+    def _extract(self, step: dict) -> CommandSet:
+        compression = step.get('compression')
+        remove      = step.get('remove')
+        archive     = step.get('archive')
+        archive     = self.mkpath(archive)
+        archive     = self.expand(archive)
+        cmdset = CommandSet()
 
-        return CommandSet(['go', 'install', '-v', package])
+        if compression == 'tgz':
+            cmdset.add( untar(archive, self.wd) )
+        elif compression == 'targz':
+            cmdset.add( untargz(archive, self.wd) )
+        elif compression == 'zip':
+            self._dependency('zip')
+            cmdset.add( unzip(archive, self.wd) )
+        else:
+            raise KeyError()
+
+        if remove:
+            cmdset.add(['rm', '-f', archive])
+
+        return cmdset
 
     def _gem(self, step: dict) -> CommandSet:
         self._dependency('gem')
@@ -253,86 +264,10 @@ class Installer:
 
         return CommandSet(cmd)
 
-    def _npm(self, step: dict) -> CommandSet:
-        self._dependency('npm')
-
-        packages = step.get('packages')
-        cmdset = CommandSet()
-
-        for package in packages:
-            cmdset.add( ['npm', 'install', '--prefix', self.wd, package] )
-            cmdset.update(
-                self._link({
-                    'name' : package,
-                    'target' : os.path.join(self.wd, 'node_modules/.bin/%s' % package)
-                })
-            )
-
-        return cmdset
-
-    def _wget(self, step: dict) -> CommandSet:
-        self._dependency('wget')
-
-        url = step.get('url')
-        outfile = step.get('outfile')
-
-        if outfile:
-            filename = outfile
-        else:
-            _, filename = os.path.split(url)
-
-        path = os.path.join(self.wd, filename)
-        cmd = ['wget', '-O', path, '--no-check-certificate', url]
-
-        return CommandSet(cmd)
-
-    def _link(self, step: dict) -> CommandSet:
-        name = step.get('name')
-        
-        target = step.get('target')
-        target = self.mkpath(target)
-        target = self.expand(target)
-
-        cmdset = CommandSet()
-        cmdset.add([ 'chmod', '+x', target ])
-        cmdset.add([ 'ln', '-fs', target, f'/opt/.catalog/bin/{name}' ])
-
-        return cmdset
-
-    def _make(self, step: dict) -> CommandSet:
-        self._dependency('make')
-
-        arguments = step.get('arguments')
-        path = step.get('path')
-
-        cmd = [ 'make' ]
-
-        if path:
-            path = self.mkpath(path)
-            path = self.expand(path)
-            cmd += ['-C', path]
-
-        if arguments:
-            cmd += arguments
-        
-        return CommandSet(cmd)
-
-    # Broken glob selecor.
-    # Need to be fixed as not functionnal yet.
-    def _rm(self, step: dict) -> CommandSet:
-        selectors = step.get('selectors')
-        path = '%s/{%s}' % (self.wd, ','.join(selectors))
-
-        return CommandSet([ 'rm', '-rf', path ])
-
     def _git(self, step: dict) -> CommandSet:
         self._dependency('git')
-        
         repo = step.get('repository')
-        clean = step.get('clean')
-
-        if not clean:
-            clean = []
+        clean = step.get('clean', [])
 
         cmdset = CommandSet()
         cmdset.add([ 'git', 'clone', '--depth', '1', repo, self.wd ])
@@ -385,10 +320,98 @@ class Installer:
 
         return CommandSet(cmd)
 
+    def _go(self, step: dict) -> CommandSet:
+        self._dependency("golang")
+        package = step.get('package')
+
+        return CommandSet(['go', 'install', '-v', package])
+
+    def _link(self, step: dict) -> CommandSet:
+        name = step.get('name')
+        target = step.get('target')
+        target = self.mkpath(target)
+        target = self.expand(target)
+
+        cmdset = CommandSet()
+        cmdset.add([ 'chmod', '+x', target ])
+        cmdset.add([ 'ln', '-fs', target, f'/opt/.catalog/bin/{name}' ])
+
+        return cmdset
+
+    def _make(self, step: dict) -> CommandSet:
+        self._dependency('make')
+        arguments = step.get('arguments')
+        path = step.get('path')
+        cmd = [ 'make' ]
+
+        if path:
+            path = self.mkpath(path)
+            path = self.expand(path)
+            cmd += ['-C', path]
+
+        if arguments:
+            cmd += arguments
+        
+        return CommandSet(cmd)
+
+    def _npm(self, step: dict) -> CommandSet:
+        self._dependency('npm')
+
+        packages = step.get('packages')
+        cmdset = CommandSet()
+
+        for package in packages:
+            cmdset.add( ['npm', 'install', '--prefix', self.wd, package] )
+            cmdset.update(
+                self._link({
+                    'name' : package,
+                    'target' : os.path.join(self.wd, 'node_modules/.bin/%s' % package)
+                })
+            )
+
+        return cmdset
+
+    def _pip(self, step: dict) -> CommandSet:
+        self._dependency('pip3')
+
+        if pkg := step.get('packages'):
+            cmd = ['pip3', 'install'] + pkg
+            return CommandSet(cmd)
+
+        requirements = step.get('file')
+        requirements = self.mkpath(requirements)
+        cmd = ['pip3', 'install', '-r', requirements]
+
+        return CommandSet(cmd)
+
+    def _wget(self, step: dict) -> CommandSet:
+        self._dependency('wget')
+
+        url = step.get('url')
+        outfile = step.get('outfile')
+
+        if outfile:
+            filename = outfile
+        else:
+            _, filename = os.path.split(url)
+
+        path = os.path.join(self.wd, filename)
+        cmd = ['wget', '-O', path, '--no-check-certificate', url]
+
+        return CommandSet(cmd)
+
+    # Broken glob selecor.
+    # Need to be fixed as not functionnal yet.
+    def _rm(self, step: dict) -> CommandSet:
+        selectors = step.get('selectors')
+        path = '%s/{%s}' % (self.wd, ','.join(selectors))
+
+        return CommandSet([ 'rm', '-rf', path ])
+
     def _run(self, step: dict) -> CommandSet:
-        cwd = step.get('cwd', False)
-        cwd = self.mkpath(cwd)
-        cwd = self.expand(cwd)
+        if cwd := step.get('cwd', None):
+            cwd = self.mkpath(cwd)
+            cwd = self.expand(cwd)
         
         path = step.get('file')
         path = self.mkpath(path)
@@ -404,37 +427,14 @@ class Installer:
         return cmdset
 
     def _shell(self, step: dict) -> CommandSet:
-        return step.get('cmd')
-
-    def _extract(self, step: dict) -> CommandSet:
-        
-        compression = step.get('compression')
-        remove      = step.get('remove')
-        archive     = step.get('archive')
-        archive     = self.mkpath(archive)
-        archive     = self.expand(archive)
-        cmdset = CommandSet()
-
-        if compression == 'tgz':
-            cmdset.add( untar(archive, self.wd) )
-        elif compression == 'targz':
-            cmdset.add( untargz(archive, self.wd) )
-        elif compression == 'zip':
-            self._dependency('zip')
-            cmdset.add( unzip(archive, self.wd) )
-        else:
-            raise KeyError()
-
-        if remove:
-            cmdset.add(['rm', '-f', archive])
-
-        return cmdset
+        return step.get('cmd', [])
 
 def shell_run(cmd: Command):
     env = os.environ
     
     env['GOPATH'] = env['HOME'] + '/.go'            # To update with /opt managed folder
     env['PYTHONPATH'] = env['HOME'] + '/.python'    # To update with /opt managed folder
+    env['PATH'] += ':' + env['HOME'] + '/.cargo/bin'       # To update with /opt managed folder
     
     try:
         check_call(
@@ -516,11 +516,6 @@ def main():
         Config.VERBOSE = True
         Config.DEPENDENCIES = 'ignore'
 
-    # If catalog init
-    if args.init:
-        Installer('catalog').init()
-        exit(0)
-
     config_map = dict()
     tool_list = args.tools
 
@@ -562,6 +557,12 @@ def main():
     except PermissionError:
         print('[!] Got permission denied on \'/opt\' folder.')
         exit(1)
+
+    # If catalog init
+    if args.init:
+        Installer('catalog').init()
+        Installer('utils.core', config_map).install()
+        exit(0)
 
     # Foreach tool, follow install procedure
     for tool in tool_list:

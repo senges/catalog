@@ -3,7 +3,7 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "file", "less", "lsof", "gnupg"]
+                "packages" : [ "ca-certificates", "tzdata", "file", "less", "lsof", "gnupg" ]
             }
         ],
         "dependencies" : [ "git", "curl", "wget", "zip", "ping", "vim", "netcat", "tree", "ssh", "dnsutils" ]
@@ -13,10 +13,20 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["tzdata", "less", "gnupg"]
+                "packages" : ["ca-certificates", "tzdata", "less", "gnupg"]
             }
         ],
         "dependencies" : [ "wget", "curl", "zip", "ping" ]
+    },
+
+    "utils.core" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["tzdata", "ca-certificates", "gnupg"]
+            }
+        ],
+        "dependencies" : []
     },
 
     "apache" : {
@@ -37,6 +47,11 @@
             }
         ],
         "dependencies" : []
+    },
+
+    "cargo" : {
+        "steps" : [],
+        "dependencies" : ["rust"]
     },
 
     "curl" : {
@@ -402,6 +417,26 @@
             }
         ],
         "dependencies" : []
+    },
+
+    "rust" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["gcc-multilib"]
+            },
+            {
+                "type" : "wget",
+                "url" : "https://sh.rustup.rs",
+                "outfile" : "rust.sh"
+            },
+            {
+                "type" : "run",
+                "file" : "rust.sh",
+                "arguments" : [ "-y" ]
+            }
+        ],
+        "dependencies" : ["gcc"]
     },
 
     "snort" : {

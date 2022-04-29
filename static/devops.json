@@ -61,6 +61,16 @@
         "dependencies" : []
     },
 
+    "cocogitto" : {
+        "steps" : [
+            {
+                "type" : "cargo",
+                "packages" : ["cocogitto"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "docker-compose" : {
         "steps" : [
             {
