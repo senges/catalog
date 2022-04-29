@@ -53,7 +53,7 @@
                 "type" : "apt",
                 "packages" : ["docker-ce", "docker-ce-cli", "containerd.io", "docker-compose-plugin"],
                 "source" : {
-                    "repository" : "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu focal stable",
+                    "repository" : "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable",
                     "key" : "https://download.docker.com/linux/ubuntu/gpg"
                 }
             }
@@ -121,7 +121,7 @@
                 "type" : "apt",
                 "packages" : ["elasticsearch"],
                 "source" : {
-                    "repository" : "deb [signed-by=/usr/share/keyrings/elasticsearch-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main",
+                    "repository" : "deb https://artifacts.elastic.co/packages/8.x/apt stable main",
                     "key" : "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
                 }
             }
@@ -219,7 +219,7 @@
                 "type" : "apt",
                 "packages" : ["influxdb"],
                 "source" : {
-                    "repository" : "deb [signed-by=/etc/apt/trusted.gpg.d/influxdb.gpg] https://repos.influxdata.com/ubuntu focal stable",
+                    "repository" : "deb https://repos.influxdata.com/ubuntu focal stable",
                     "key" : "https://repos.influxdata.com/influxdb.key"
                 }
             }

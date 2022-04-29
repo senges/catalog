@@ -214,7 +214,7 @@ class Installer:
                 pass
 
             # Avoid duplicates
-            if repo not in sources:
+            if not Config.DRY_RUN and repo not in sources:
                 with open('/etc/apt/sources.list.d/catalog.list', 'a') as f:
                     f.write(repo + '\n')
 
@@ -569,7 +569,7 @@ def main():
         Installer( tool, config_map ).install()
 
     # Remove cache (to be improved)
-    if not args.preserve_cache:
+    if not Config.DRY_RUN and not args.preserve_cache:
         print('\n[i] Removing cached data...')
         shutil.rmtree( '/var/lib/apt/lists/' )
         os.mkdir( '/var/lib/apt/lists/' )
