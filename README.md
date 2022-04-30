@@ -263,7 +263,7 @@ Add arguments (`{{pwd}}` keyword will feed current context path).
 This is the equivalent of :
 
 ```text
-$  ./configure.sh
+$  ./configure.sh --prefix="$(pwd)"
 ```
 
 If the stub cannot be executed globally with absolute path, optional `cwd` options allows to set a directory for execution.

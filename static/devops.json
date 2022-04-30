@@ -392,6 +392,16 @@
         "dependencies" : []
     },
 
+    "podman" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["podman"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "prometheus" : {
         "steps" : [
             {
