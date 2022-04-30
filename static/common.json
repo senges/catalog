@@ -281,7 +281,7 @@
             },
             {
                 "type" : "apt",
-                "packages" : ["nala-legacy"],
+                "packages" : ["nala"],
                 "source" : {
                     "repository" : "deb http://deb.volian.org/volian/ scar main",
                     "key" : "https://deb.volian.org/volian/scar.key"

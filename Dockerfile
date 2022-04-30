@@ -2,7 +2,7 @@
 # FROM ubuntu:${UBUNTU_VERSION} as ubuntu
 
 # Building stage
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 
