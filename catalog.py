@@ -68,7 +68,6 @@ class Installer:
         self.builtins = builtins()
 
         self.mkpath = lambda x: os.path.join(self.wd, x)
-        self.expand = lambda x: x if Config.DRY_RUN else glob(x)[0]
 
         self.functions_mapper = {
             'apt'            : self._apt,
@@ -92,6 +91,15 @@ class Installer:
     def is_installed(cls, name):
         path = os.path.join('/opt/.catalog/tools', name)
         return os.path.exists(path)
+
+    @staticmethod
+    def expand(path):
+        expansion = glob(path)
+
+        if Config.DRY_RUN or not expansion:
+            return path
+
+        return expansion[0]
 
     def init(self):
         try:

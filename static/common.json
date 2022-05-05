@@ -413,7 +413,7 @@
         "steps" : [
             {
                 "type" : "apt",
-                "packages" : ["ruby"]
+                "packages" : ["ruby", "ruby-dev"]
             }
         ],
         "dependencies" : []
