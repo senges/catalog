@@ -227,10 +227,10 @@ class Installer:
                     f.write(repo + '\n')
 
         if cmdset.commands or not Config.CACHE:
-            cmdset.add(['apt', 'update'])
+            cmdset.add(['apt-get', 'update'])
             Config.CACHE = True
 
-        cmdset.add(['apt', 'install', '-y', '--no-install-recommends'] + pkg)
+        cmdset.add(['apt-get', 'install', '-y', '--no-install-recommends'] + pkg)
 
         return cmdset
 

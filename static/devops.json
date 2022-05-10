@@ -181,7 +181,7 @@
                 "type" : "apt",
                 "packages" : ["grafana"],
                 "source" : {
-                    "repository" : "https://packages.grafana.com/oss/deb stable main",
+                    "repository" : "deb https://packages.grafana.com/oss/deb stable main",
                     "key" : "https://packages.grafana.com/gpg.key"
                 }
             }
