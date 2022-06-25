@@ -398,7 +398,7 @@
             },
             {
                 "type" : "pip",
-                "packages" : ["updog"]
+                "packages" : ["pwntools"]
             }
         ],
         "dependencies" : []

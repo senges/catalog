@@ -49,6 +49,16 @@
         "dependencies" : []
     },
 
+    "binutils" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["binutils"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "cargo" : {
         "steps" : [],
         "dependencies" : ["rust"]
@@ -349,6 +359,16 @@
         "dependencies" : []
     },
 
+    "objdump" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["objdump"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "openvpn" : {
         "steps" : [
             {
@@ -479,6 +499,16 @@
         "dependencies" : []
     },
 
+    "strings" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["strings"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "suricata" : {
         "steps" : [
             {
@@ -544,6 +574,16 @@
             {
                 "type" : "apt",
                 "packages" : ["xclip"]
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "xxd" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["xxd"]
             }
         ],
         "dependencies" : []

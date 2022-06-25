@@ -53,6 +53,29 @@
         "dependencies" : []
     },
 
+    "dive" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "wagoodman/dive",
+                "artifact" : "dive_{{latest}}_linux_amd64.tar.gz",
+                "outfile" : "dive_linux_amd64.tar.gz"
+            },
+            {
+                "type" : "extract",
+                "archive" : "dive_linux_amd64.tar.gz",
+                "compression" : "zip",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "dive",
+                "name" : "dive"
+            }
+        ],
+        "dependencies" : []
+    },
+
     "docker" : {
         "steps" : [
             {
