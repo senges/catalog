@@ -509,6 +509,16 @@
         "dependencies" : []
     },
 
+    "sudo" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["sudo"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "suricata" : {
         "steps" : [
             {
