@@ -1,0 +1,41 @@
+{
+    "fixuid" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "boxboat/fixuid",
+                "artifact" : "fixuid-{{latest}}-linux-amd64.tar.gz",
+                "outfile" : "fixuid-linux-amd64.tar.gz"
+            },
+            {
+                "type" : "extract",
+                "compression" : "targz",
+                "archive" : "fixuid-linux-amd64.tar.gz",
+                "remove" : true
+            },
+            {
+                "type" : "link",
+                "target" : "fixuid",
+                "name" : "fixuid"
+            }
+        ],
+        "dependencies" : []
+    },
+
+    "zsh-in-docker" : {
+        "steps" : [
+            {
+                "type" : "github_release",
+                "repository" : "deluan/zsh-in-docker",
+                "artifact" : "zsh-in-docker.sh",
+                "outfile" : "zsh-in-docker.sh"
+            },
+            {
+                "type" : "link",
+                "target" : "zsh-in-docker.sh",
+                "name" : "zsh-in-docker"
+            }
+        ],
+        "dependencies" : []
+    }
+}
