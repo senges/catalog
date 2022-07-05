@@ -39,6 +39,16 @@
         "dependencies" : []
     },
 
+    "apt-utils" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["apt-utils"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "at" : {
         "steps" : [
             {

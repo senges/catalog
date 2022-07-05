@@ -36,6 +36,6 @@
                 "name" : "zsh-in-docker"
             }
         ],
-        "dependencies" : []
+        "dependencies" : ["curl", "apt-utils"]
     }
 }
