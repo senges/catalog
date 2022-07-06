@@ -579,8 +579,11 @@ def main():
     # Remove cache (to be improved)
     if not Config.DRY_RUN and not args.preserve_cache:
         print('\n[i] Removing cached data...')
-        shutil.rmtree( '/var/lib/apt/lists/' )
-        os.mkdir( '/var/lib/apt/lists/' )
+        try:
+            shutil.rmtree( '/var/lib/apt/lists/' )
+            os.mkdir( '/var/lib/apt/lists/' )
+        except:
+            print('[-] User has no right to delete cache')
 
     print()
 
