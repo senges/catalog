@@ -24,6 +24,7 @@ if [ ! -d "$INSTALL_DIR" ]; then
 fi
 
 python3 /opt/catalog/catalog.py --init
+ln -s $(which catalog) /usr/local/sbin/catalog
 
 # Cleanup
 rm -rf /var/lib/apt/lists/*
