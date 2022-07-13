@@ -534,6 +534,20 @@
         "dependencies" : []
     },
 
+    "vault" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["vault"],
+                "source" : {
+                    "repository" : "deb [arch=amd64] https://apt.releases.hashicorp.com focal main",
+                    "key" : "https://apt.releases.hashicorp.com/gpg"
+                }
+            }
+        ],
+        "dependencies" : [ "curl" ]
+    },
+
     "virtualbox" : {
         "steps" : [
             {
