@@ -1,6 +1,7 @@
 # Catalog
 
-Catalog makes tool installation inside containers super easy, fast and clean.
+Catalog makes tool installation inside containers super easy, fast and clean.  
+A comprehensive currated list of available tools is available in [TOOLS.md](./TOOLS.md).
 
 > Catalog is built for apt based distributions. 
 > Feel free to improve !
