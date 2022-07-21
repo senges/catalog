@@ -280,6 +280,16 @@
         "dependencies" : []
     },
 
+    "kitt" : {
+        "steps" : [
+            {
+                "type" : "pip",
+                "packages" : ["kitt-shell"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "knative-client" : {
         "steps" : [
             {
