@@ -599,6 +599,16 @@
         "dependencies" : []
     },
 
+    "xeyes" : {
+        "steps" : [
+            {
+                "type" : "apt",
+                "packages" : ["x11-apps"]
+            }
+        ],
+        "dependencies" : []
+    },
+
     "xxd" : {
         "steps" : [
             {
