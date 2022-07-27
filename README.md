@@ -93,7 +93,7 @@ Available `steps` types are described right after this section.
             ...
         },
     ],
-    "dependency" : []  <-- Not yet implemented
+    "dependencies" : [ "myothertool", "mytool2" ]
 }
 ```
 
