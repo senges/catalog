@@ -1,5 +1,9 @@
 # Catalog
 
+> Catalog was a fun project to code, mostly to improve my python level and support my other project [kitt](https://github.com/senges/kitt).
+> It's quite pointless now tho as Nix is doing the same job way better, with strong community involvement.
+> Will archive this repository for now.
+
 Catalog makes tool installation inside containers super easy, fast and clean.  
 A comprehensive currated list of available tools is available in [TOOLS.md](./TOOLS.md).
 
